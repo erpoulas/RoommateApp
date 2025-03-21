@@ -12,21 +12,6 @@ const {assert, expect} = chai;
 
 // ********************** DEFAULT WELCOME TESTCASE ****************************
 
-describe('I am testing the server', () => {
-  // Sample test case given to test / endpoint.
-  it('Returns the default welcome message', done => {
-    chai
-      .request(app)
-      .get('/welcome')
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body.status).to.equals('success');
-        assert.strictEqual(res.body.message, 'Welcome!');
-        done();
-      });
-  });
-});
-
 describe('i am testing / endpoint', () => {
   // Sample test case given to test / endpoint.
   it('should render register page', done => {

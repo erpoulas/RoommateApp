@@ -39,26 +39,26 @@ console.log('load theme called');
 //   }
 // // initialize the game when the page loads
 
-document.addEventListener('DOMContentLoaded', function () {
-  // Check if the current page is the "playgame" page (by URL or a unique element)
-  if (window.location.pathname.includes("playHangman")) {
-    document.addEventListener('keydown', function (event) {
-      const letter = event.key.toUpperCase(); // Get the pressed key and convert it to uppercase
+// document.addEventListener('DOMContentLoaded', function () {
+//   // Check if the current page is the "playgame" page (by URL or a unique element)
+//   if (window.location.pathname.includes("playHangman")) {
+//     document.addEventListener('keydown', function (event) {
+//       const letter = event.key.toUpperCase(); // Get the pressed key and convert it to uppercase
 
-      // Check if the key is a valid letter (A-Z)
-      if (letter >= 'A' && letter <= 'Z') {
-        // Find the corresponding button for the letter
-        const button = document.querySelector(`button[onclick="checkGuess('${letter}', this)"]`);
-        if (button) {
-          checkGuess(letter, button); // Call the checkGuess function with the guessed letter
-        }
-      }
-      loadTheme(); // Might change **
-      console.log('load theme called into event listener');
-    });
-  }
-  initializeGame(); // Call initializeGame to set up the initial game state
-});
+//       // Check if the key is a valid letter (A-Z)
+//       if (letter >= 'A' && letter <= 'Z') {
+//         // Find the corresponding button for the letter
+//         const button = document.querySelector(`button[onclick="checkGuess('${letter}', this)"]`);
+//         if (button) {
+//           checkGuess(letter, button); // Call the checkGuess function with the guessed letter
+//         }
+//       }
+//       loadTheme(); // Might change **
+//       console.log('load theme called into event listener');
+//     });
+//   }
+//   initializeGame(); // Call initializeGame to set up the initial game state
+// });
 
 //By using DOMContentLoaded, the code ensures that all elements needed for the game (like buttons, displays, or hidden elements) are available before trying to manipulate them.
 //Without this, the initializeGame() function might run too early, causing errors if the DOM isn't fully loaded yet

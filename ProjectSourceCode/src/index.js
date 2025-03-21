@@ -146,7 +146,7 @@ app.post('/register', async (req, res) => {
 
     var uname = req.body.username;
     console.log("USERNAME: ", uname);
-    const regquery = `insert into users (username, password, easy_high_score, medium_high_score, hard_high_score) values ($1, $2, 0, 0, 0);`;
+    const regquery = `insert into users (username, password, high_score) values ($1, $2, 0);`;
     if ((uname !== '') && (req.body.password !== '')){
     const hash = await bcrypt.hash(req.body.password, 10);
     db.any(regquery,[uname, hash])
@@ -208,9 +208,7 @@ app.get('/home', (req, res) => {
   .then( (rows) => {
     res.status(200).render('pages/home', {
       username: req.session.user,
-      easy_high_score: rows[0].easy_high_score,
-      medium_high_score: rows[0].medium_high_score,
-      hard_high_score: rows[0].hard_high_score,
+      high_score: rows[0].high_score,
     });
   })
   .catch(err => {
@@ -221,7 +219,7 @@ app.get('/home', (req, res) => {
 });
 
 app.post('/score', (req, res) => {
-  let difficulty = req.session.difficulty || 'Easy';
+  // let difficulty = req.session.difficulty || 'Easy';
   console.log('waoo');
   var score = `select * from users where users.username = '${req.session.user}'`;
   db.any(score)
@@ -229,16 +227,8 @@ app.post('/score', (req, res) => {
     console.log(difficulty);
     var newScore;
     var updateScore;
-    if(difficulty == "Easy") {
-      newScore = rows[0].easy_high_score + 1;
-      updateScore = `update users set easy_high_score = ${newScore} where users.username = '${req.session.user}'`;
-    } else if(req.session.difficulty == "Medium") {     
-      newScore = rows[0].medium_high_score + 1;
-      updateScore = `update users set medium_high_score = ${newScore} where users.username = '${req.session.user}'`;
-    } else if(req.session.difficulty == "Hard") {
-      newScore = rows[0].hard_high_score + 1;
-      updateScore = `update users set hard_high_score = ${newScore} where users.username = '${req.session.user}'`;
-    }
+    newScore = rows[0].high_score + 1;
+    updateScore = `update users set high_score = ${newScore} where users.username = '${req.session.user}'`;
     console.log(newScore);
     db.any(updateScore)
     .then((rows) => {
@@ -260,7 +250,7 @@ app.get('/leaderboard', function (req, res) {
   // loads the leaderboard by fetching all the users from the database
   // users are ranked by their highest hard mode score
   
-    var usersRanked = `select * from users order by hard_high_score desc;`
+    var usersRanked = `select * from users order by high_score desc;`
   
     // use task to execute multiple queries
     db.any(usersRanked)
