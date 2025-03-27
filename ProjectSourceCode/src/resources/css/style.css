@@ -42,20 +42,23 @@ html, body {
 /* Ensure the background color is applied */
 .create-account {
   display: flex;
-  justify-content: center;
-  align-items: center;
   width: 212px;
   height: 58px;
   padding: 12px;
-
-  font-size: 18px;
-  font-weight: 600; 
+  justify-content: center;
+  align-items: center;
   gap: 8px;
 
   border-radius: 16px;
   border: 1px solid #2C2C2C;
   background-color: #BAC366 !important; /* Forces background to stay */
   color: #2C2C2C; /* Ensures text is readable */
+
+  font-size: 18px;
+  font-weight: 600; 
+  color: #2C2C2C;
+  text-transform: uppercase;
+
 }
 
 /* Fix Bootstrap Conflicts */
@@ -72,7 +75,31 @@ html, body {
 }
 
 .sign-in {
-  background-color: #1a2c3b;
-  color: #b5bf66;
+  display: flex;
+  width: 212px;
+  height: 58px;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  border-radius: 16px;
+  border: 1px solid #2C2C2C;
+  background: #101F2A;
+
+  font-size: 18px;
+  font-weight: 600; 
+  color: #BAC366;
+  text-transform: uppercase; 
 }
 
+.sign-in.btn {
+  background-color: #101F2A !important;
+  border-color: #BAC366 !important;
+}
+
+.sign-in:hover {
+  background-color: #081219 !important;
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}
