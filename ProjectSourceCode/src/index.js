@@ -158,12 +158,12 @@ app.post('/register', async (req, res) => {
     // query results can be obtained
     // as shown below
     .then(data => {
-        res.status(200).render('pages/login',{message: "Sucess, Get in:)!"});
+        res.status(200).render('pages/login',{message: "Successful registration!", pageClass: 'blank-page' });
     })
     // if query execution fails
     // send error message
     .catch(err => {
-      res.status(400).render('pages/register',{message: "Something Went Wrong"});
+      res.status(400).render('pages/register',{message: "Username already taken, try again", pageClass: 'blank-page' });
     });
   }
   else{

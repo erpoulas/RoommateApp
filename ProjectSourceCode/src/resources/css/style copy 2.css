@@ -4,7 +4,7 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
 }
 
 /* Dynamic background images for each page */
@@ -51,15 +51,29 @@ html, body {
 
   border-radius: 16px;
   border: 1px solid #2C2C2C;
-  background-color: #BAC366 !important; /* Ensures background stays */
-  color: #2C2C2C;
+  background-color: #BAC366 !important; /* Forces background to stay */
+  color: #2C2C2C; /* Ensures text is readable */
 
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 600; 
+  color: #2C2C2C;
   text-transform: uppercase;
+
 }
 
-/* Sign-In Button */
+/* Fix Bootstrap Conflicts */
+.create-account.btn {
+  background-color: #BAC366 !important;
+  border-color: #2C2C2C !important;
+}
+
+/* Fix Button Hover */
+.create-account:hover {
+  background-color: #A8B351 !important;
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}
+
 .sign-in {
   display: flex;
   width: 212px;
@@ -74,10 +88,22 @@ html, body {
   background: #101F2A;
 
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 600; 
   color: #BAC366;
-  text-transform: uppercase;
+  text-transform: uppercase; 
 }
+
+.sign-in.btn {
+  background-color: #101F2A !important;
+  border-color: #BAC366 !important;
+}
+
+.sign-in:hover {
+  background-color: #081219 !important;
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}
+
 
 /* General Form Styling */
 .login-form, .register-form {
@@ -88,6 +114,8 @@ html, body {
   max-width: 320px;
   margin: auto;
   padding: 20px;
+  /* background: #1A2C3B;  */
+  /* Adjust background if needed */
   border-radius: 12px;
 }
 
@@ -109,8 +137,15 @@ html, body {
 .input-label {
   font-size: 16px;
   color: #BAC366;
+  
   display: block;
   margin-bottom: 5px;
+
+  /* Single Line/Body Base */
+  font-family: var(--sds-typography-body-font-family);
+  font-style: normal;
+  font-weight: var(--sds-typography-body-font-weight-regular);
+  line-height: 100%; /* 16px */
 }
 
 /* Input Fields */
@@ -130,19 +165,26 @@ html, body {
   font-size: 16px;
 }
 
-/* Register/Login Link */
+/* Input Focus */
+/* .input-field:focus {
+  outline: none;
+  border-color: #D9D9D9;
+  box-shadow: 0px 0px 8px rgba(186, 195, 102, 0.5);
+} */
+
+/* Login Link */
 .register-link, .login-link {
   color: #BAC366;
   text-decoration: none;
   font-weight: bold;
 }
 
-.register-link:hover, .login-link:hover {
+register-link:hover, .login-link:hover {
   text-decoration: underline;
 }
 
-/* Register & Login Buttons */
-.login-button, .register-button {
+/* Register Button */
+.login-button:hover, .register-button {
   display: flex;
   width: 308px;
   height: 43px;
@@ -153,19 +195,22 @@ html, body {
   flex-shrink: 0;
 
   border-radius: 8px;
-  border: 1px solid #2C2C2C;
-  background-color: #101F2A;
+  border: 1px #2C2C2C;
+  /* background: #101F2A; */
+  
   font-size: 18px;
-  color: #BAC366;
+  
   cursor: pointer;
+  color: #BAC366;
+  background-color: #101F2A;
+  transition: all 0.3s ease-in-out;
 }
 
-/* Simple Hover Effect */
-.login-button:hover, .register-button:hover {
-  background-color: #081219;
+.login-button:hover .register-button:hover {
+  /* background: #A8B351; */
+  transform: scale(1.05);
 }
 
-/* Login Text */
-#registeracc, #loginacc {
-  color: #101F2A;
+#loginacc {
+  color: #101F2A; /* Change this to your desired color */
 }
