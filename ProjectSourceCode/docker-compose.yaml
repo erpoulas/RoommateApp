@@ -5,7 +5,7 @@ services:
     expose:
       - '5432'
     volumes:
-      - CU-CSCI3308-Fall2024-Ultimate-Hangman:/var/lib/postgresql/data
+      - KTP-Roommate-App-SP25:/var/lib/postgresql/data
       - ./src/init_data:/docker-entrypoint-initdb.d
   web:
     image: node:lts
@@ -22,4 +22,4 @@ services:
       - ./:/home/node/app
     command: 'npm run testandrun'
 volumes:
-  CU-CSCI3308-Fall2024-Ultimate-Hangman:
+  KTP-Roommate-App-SP25:
