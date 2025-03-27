@@ -85,15 +85,15 @@ app.use(
 
 
 app.get('/', (req, res) => {
-  res.status(200).render('pages/welcome');
+  res.status(200).render('pages/welcome', { pageClass: 'welcome-page' });
 });
 
 app.get('/welcome', (req, res) => {
-  res.status(200).render('pages/welcome');
+  res.status(200).render('pages/welcome', { pageClass: 'welcome-page' });
 });
 
 app.get('/register', (req, res) => {
-  res.status(200).render('pages/register');
+  res.status(200).render('pages/register', { pageClass: 'register-page' });
 });
 
 app.get('/login', (req, res) => {
