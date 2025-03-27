@@ -1,3 +1,38 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
+.welcome-page {
+  background-image: url('/img/welcome-page.svg');
+}
+
+.register-page {
+  background-image: url('/img/register-bg.svg');
+}
+
+.welcome-page, .register-page{
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* light theme */
+body.light-theme {
+  background-color: white !important;
+  color: black !important;
+}
+
+/* dark theme */
+body.dark-theme {
+  background-color: #2c3745 !important;
+  color: white !important;
+}
+
+/* adfad */
 .navbar .nav-link {
         color: white !important;
         padding: 10px;
@@ -12,18 +47,60 @@
         width: 100%;
       }
       
-/* light theme */
-body.light-theme {
-  background-color: white !important;
-  color: black !important;
+
+.overlay-content {
+  position: absolute;
+  top: 60%; /* Adjust per page */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
-/* dark theme */
-body.dark-theme {
-  background-color: #2c3745 !important;
-  color: white !important;
+input {
+  width: 80%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
 }
 
+button {
+  width: 200px;
+  padding: 12px;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.create-account {
+  background-color: #b5bf66;
+  color: #2c3e50;
+}
+
+.sign-in {
+  background-color: #1a2c3b;
+  color: #b5bf66;
+}
+
+/* 🏆 Leaderboard Specific Styles */
+.leaderboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.leaderboard-entry {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+/* 
 .word-display{
   gap: 10px;
   list-style: none;
@@ -31,7 +108,7 @@ body.dark-theme {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-}
+} */
 
 /* Style the buttons */
 .button-group {
@@ -53,4 +130,22 @@ body.dark-theme {
 h1 {
   font-size: 5.5rem;
   margin-bottom: 20px;
+}
+
+/* 🖥️ Desktop adjustments */
+@media (min-width: 1024px) {
+  .overlay-content {
+    top: 50%;
+  }
+}
+
+/* 📱 Mobile adjustments */
+@media (max-width: 768px) {
+  .overlay-content {
+    top: 70%;
+  }
+
+  button {
+    width: 90%;
+  }
 }

@@ -1,5 +1,22 @@
-{{> header}}
+{{!-- {{> header}}
 {{>nav}}
 {{>message}}
 {{{body}}}
-{{>footer}}
+{{>footer}} --}}
+
+{{> header}}
+
+<body class="h-100 d-flex flex-column {{pageClass}}">
+  
+  {{> message}}  <!-- Shows success/error messages -->
+
+  <main class="flex-grow-1">
+    {{{body}}} <!-- Page-specific content -->
+  </main>
+
+  {{> footer}}
+
+  <script src="/js/script.js"></script>
+  <script src="/js/client.js"></script>
+</body>
+</html>

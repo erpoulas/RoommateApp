@@ -85,7 +85,11 @@ app.use(
 
 
 app.get('/', (req, res) => {
-  res.status(200).render('pages/register');
+  res.status(200).render('pages/welcome');
+});
+
+app.get('/welcome', (req, res) => {
+  res.status(200).render('pages/welcome');
 });
 
 app.get('/register', (req, res) => {
