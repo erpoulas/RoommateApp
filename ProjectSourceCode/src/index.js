@@ -93,11 +93,11 @@ app.get('/welcome', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  res.status(200).render('pages/register', { pageClass: 'register-page' });
+  res.status(200).render('pages/register', { pageClass: 'blank-page' });
 });
 
 app.get('/login', (req, res) => {
-    res.status(200).render('pages/login');
+    res.status(200).render('pages/login', { pageClass: 'blank-page' });
 });
 
 

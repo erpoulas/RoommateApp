@@ -12,7 +12,7 @@ html, body {
   background-image: url('/img/welcome-page.svg');
 }
 
-.register-page {
+.blank-page {
   background-image: url('/img/blank-background.svg');
 }
 
@@ -21,7 +21,7 @@ html, body {
 }
 
 /* Background image settings */
-.welcome-page, .register-page, .leaderboard-page {
+.welcome-page, .blank-page, .leaderboard-page {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -106,7 +106,7 @@ html, body {
 
 
 /* General Form Styling */
-.register-form {
+.login-form, .register-form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,7 +120,7 @@ html, body {
 }
 
 /* Form Title */
-.register-title {
+.login-title, .register-title {
   font-size: 22px;
   color: #BAC366;
   margin-bottom: 16px;
@@ -173,18 +173,18 @@ html, body {
 } */
 
 /* Login Link */
-.login-link {
+.register-link, .login-link {
   color: #BAC366;
   text-decoration: none;
   font-weight: bold;
 }
 
-.login-link:hover {
+register-link:hover, .login-link:hover {
   text-decoration: underline;
 }
 
 /* Register Button */
-.register-button {
+.login-button:hover, .register-button {
   display: flex;
   width: 308px;
   height: 43px;
@@ -206,7 +206,7 @@ html, body {
   transition: all 0.3s ease-in-out;
 }
 
-.register-button:hover {
+.login-button:hover .register-button:hover {
   /* background: #A8B351; */
   transform: scale(1.05);
 }
