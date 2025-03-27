@@ -1,4 +1,4 @@
-<form method="post" action="/register">
+{{!-- <form method="post" action="/register">
   <div class="mb-3">
     <h1>Register</h1>
     <label for="username" class="form-label">Username</label>
@@ -9,4 +9,29 @@
         <a href = '/login'>Login</a>
     </div>
   <button type="submit" class="btn btn-primary">Register</button>
+</form> --}}
+
+
+<form method="post" action="/register" class="register-form">
+  <h1 class="register-title">Register</h1>
+
+  <!-- Username Input -->
+  <div class="input-group">
+    <label for="username" class="input-label">Username</label>
+    <input type="text" id="username" name="username" class="input-field" placeholder="Enter your username">
+  </div>
+
+  <!-- Password Input -->
+  <div class="input-group">
+    <label for="password" class="input-label">Password</label>
+    <input type="password" id="password" name="password" class="input-field" placeholder="Enter your password">
+  </div>
+
+  <!-- Login Link -->
+  <div id="loginacc" class="form-text">
+    Already have an account? <a href="/login" class="login-link">Login</a>
+  </div>
+
+  <!-- Register Button -->
+  <button type="submit" class="register-button">Register</button>
 </form>
