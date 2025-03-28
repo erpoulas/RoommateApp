@@ -119,7 +119,7 @@ app.post('/login', async (req, res) => {
     //console.info(user)
     if(user.username === ''){
 
-      res.render('pages/register');
+      res.render('pages/register', {pageClass: 'blank-page'});
       return;
     }
     console.log('matching')
@@ -127,7 +127,7 @@ app.post('/login', async (req, res) => {
     console.log(match)
     if(match !== true){
       //res.redirect('/login', {message: "Wrong Password or Username"})
-      res.status(400).render('pages/login' , {message: "Wrong Password or Username"});
+      res.status(400).render('pages/login' , {message: "Wrong Password or Username", pageClass: 'blank-page' });
       return;
     }
     req.session.user = req.body.username;
@@ -135,8 +135,8 @@ app.post('/login', async (req, res) => {
     res.redirect('/home');
   })
     .catch(err => {
-      res.status(500).render('pages/register',{message: "Something Went Wrong"});
-      // ireegular errros like overflows
+      res.status(500).render('pages/register',{message: "Something Went Wrong", pageClass: 'blank-page'});
+      // irregular errors like overflows
     });
 
 });
@@ -168,9 +168,8 @@ app.post('/register', async (req, res) => {
   }
   else{
     console.log('uh oh spaghettio');
-    res.status(400).render('pages/register',{message: "Something Went Wrong"});
+    res.status(400).render('pages/register',{message: "Something Went Wrong", pageClass: 'blank-page' });
   }
-    // To-DO: Insert username and hashed password into the 'users' table
 });
 
 
