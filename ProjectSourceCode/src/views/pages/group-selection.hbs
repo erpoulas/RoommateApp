@@ -1,0 +1,18 @@
+<div class="group-selection">
+  <h1>Welcome, {{user}}!</h1>
+  <p>You must join or create a group before continuing.</p>
+
+  <!-- Create Group Form -->
+  <form method="post" action="/create-group">
+    <label for="groupName">Create a New Group</label>
+    <input type="text" id="groupName" name="groupName" required>
+    <button type="submit">Create Group</button>
+  </form>
+
+  <!-- Join Group Form -->
+  <form method="post" action="/join-group">
+    <label for="groupCode">Join an Existing Group</label>
+    <input type="text" id="groupCode" name="groupCode" required>
+    <button type="submit">Join Group</button>
+  </form>
+</div>

@@ -101,6 +101,10 @@ app.get('/login', (req, res) => {
 });
 
 
+app.get('/group-selection', (req, res) => {
+  res.status(200).render('pages/group-selection', { pageClass: 'blank-page' });
+});
+
 // login creates a user session if the user passes in the correct
 // / valid credentials. If invalid or wrong credentials were passed in
 // the login page is rendered again. Otherwise on sucessful login
@@ -131,6 +135,12 @@ app.post('/login', async (req, res) => {
       return;
     }
     req.session.user = req.body.username;
+    req.session.groupId = user.group_id;
+
+    if (!user.group_id) {
+      return res.redirect('/group-selection');
+    }
+
     req.session.save();
     res.redirect('/home');
   })
@@ -150,7 +160,7 @@ app.post('/register', async (req, res) => {
 
     var uname = req.body.username;
     console.log("USERNAME: ", uname);
-    const regquery = `insert into users (username, password, high_score) values ($1, $2, 0);`;
+    const regquery = `insert into users (username, password, high_score, group_id ) values ($1, $2, 0, NULL);`;
     if ((uname !== '') && (req.body.password !== '')){
     const hash = await bcrypt.hash(req.body.password, 10);
     db.any(regquery,[uname, hash])
@@ -171,6 +181,45 @@ app.post('/register', async (req, res) => {
     res.status(400).render('pages/register',{message: "Something Went Wrong", pageClass: 'blank-page' });
   }
 });
+
+app.post('/create-group', async (req, res) => {
+  const { groupName } = req.body;
+  const groupCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit code
+
+  // Insert new group
+  const group = await db.one(`INSERT INTO groups (group_name, group_code) VALUES ($1, $2) RETURNING id`, 
+                             [groupName, groupCode]);
+
+  // Update user to join this group
+  await db.none(`UPDATE users SET group_id = $1 WHERE username = $2`, [group.id, req.session.user]);
+
+  req.session.groupId = group.id; // Store group in session
+  res.redirect('/home'); // Redirect to home after group creation
+});
+
+app.post('/join-group', async (req, res) => {
+  const { groupCode } = req.body;
+
+  // Find group by code
+  const group = await db.oneOrNone(`SELECT id FROM groups WHERE group_code = $1`, [groupCode]);
+
+  if (!group) {
+      return res.status(400).render('pages/group-selection', { message: "Invalid group code" });
+  }
+
+  // Update user to join this group
+  await db.none(`UPDATE users SET group_id = $1 WHERE username = $2`, [group.id, req.session.user]);
+
+  req.session.groupId = group.id; // Store group in session
+  res.redirect('/home'); // Redirect to home after joining
+});
+
+// const ensureInGroup = (req, res, next) => {
+//   if (!req.session.groupId) {
+//       return res.redirect('/group-selection'); // Force users to pick a group
+//   }
+//   next();
+// };
 
 
 const auth = (req, res, next) => {
