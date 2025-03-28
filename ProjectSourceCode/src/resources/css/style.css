@@ -207,11 +207,6 @@ html, body {
   margin-bottom: 20px;
 }
 
-/* Input Group */
-.input-group {
-  width: 100%;
-  margin-bottom: 16px;
-}
 
 /* Input Labels */
 .input-label {
@@ -260,3 +255,58 @@ html, body {
 .group-button:hover {
   background-color: #081219;
 }
+
+/* Shared styles for all buttons */
+.group-btn {
+  display: flex;
+  width: 185px;
+  height: 179px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+
+  border-radius: 100px;
+  background: #BAC366;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+/* Specific Button Styles */
+
+/* Task List Button */
+.group-btn.task-list {
+  border: 7px solid #3FC5E4;
+  top: 296px;
+  left: -9px;
+}
+
+/* Group Calendar Button */
+.group-btn.group-calendar {
+  border: 7px solid #9826D1;
+  top: 296px;
+  left: 231px;
+}
+
+/* Leaderboard Button */
+.group-btn.leaderboard {
+  border: 6px solid #F6FF00;
+  top: 505px;
+  left: -5px;
+}
+
+/* Remind Button */
+.group-btn.remind {
+  border: 5px solid #F30;
+  top: 697px;
+  left: 104px;
+}
+
+.group-btn.weekly-roundup{
+  border: 7px solid #53C688;
+  top: 223px;
+  left: 100px;
+}
+
+/* Button Container Styling */
+

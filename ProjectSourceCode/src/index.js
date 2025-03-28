@@ -130,7 +130,6 @@ app.post('/login', async (req, res) => {
     const match = await bcrypt.compare(req.body.password, user.password);
     console.log(match)
     if(match !== true){
-      //res.redirect('/login', {message: "Wrong Password or Username"})
       res.status(400).render('pages/login' , {message: "Wrong Password or Username", pageClass: 'blank-page' });
       return;
     }
@@ -261,6 +260,7 @@ app.get('/home', (req, res) => {
     res.status(200).render('pages/home', {
       username: req.session.user,
       high_score: rows[0].high_score,
+      pageClass: 'blank-page'
     });
   })
   .catch(err => {
