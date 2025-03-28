@@ -102,7 +102,7 @@ app.get('/login', (req, res) => {
 
 
 app.get('/group-selection', (req, res) => {
-  res.status(200).render('pages/group-selection', { pageClass: 'blank-page' });
+  res.status(200).render('pages/group-selection', { username: req.session.user, pageClass: 'blank-page' });
 });
 
 // login creates a user session if the user passes in the correct

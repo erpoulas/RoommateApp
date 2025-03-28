@@ -1,5 +1,5 @@
-<div class="group-selection">
-  <h1>Welcome, {{user}}!</h1>
+{{!-- <div class="group-selection">
+  <h1>Welcome, {{username}}!</h1>
   <p>You must join or create a group before continuing.</p>
 
   <!-- Create Group Form -->
@@ -14,5 +14,28 @@
     <label for="groupCode">Join an Existing Group</label>
     <input type="text" id="groupCode" name="groupCode" required>
     <button type="submit">Join Group</button>
+  </form>
+</div> --}}
+
+<div class="group-selection-form">
+  <h1 class="group-selection-title">Welcome, {{username}}!</h1>
+  <p class="group-selection-text">You must join or create a group before continuing.</p>
+
+  <!-- Create Group Form -->
+  <form method="post" action="/create-group" class="group-form">
+    <div class="input-group">
+      <label for="groupName" class="input-label">Create a New Group</label>
+      <input type="text" id="groupName" name="groupName" class="input-field" placeholder="Enter group name" required>
+    </div>
+    <button type="submit" class="group-button">Create Group</button>
+  </form>
+
+  <!-- Join Group Form -->
+  <form method="post" action="/join-group" class="group-form">
+    <div class="input-group">
+      <label for="groupCode" class="input-label">Join an Existing Group</label>
+      <input type="text" id="groupCode" name="groupCode" class="input-field" placeholder="Enter group code" required>
+    </div>
+    <button type="submit" class="group-button">Join Group</button>
   </form>
 </div>
