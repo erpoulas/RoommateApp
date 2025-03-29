@@ -229,6 +229,74 @@ const auth = (req, res, next) => {
 };
 app.use(auth);
 
+
+app.post('/add-task', async (req, res) => {
+  const { taskName } = req.body;
+  const groupId = req.session.groupId; // Get user's group
+
+  if (!groupId) {
+      return res.redirect('/group-selection'); // User must be in a group
+  }
+
+  // Insert task with no assigned user
+  await db.none(`INSERT INTO tasks (group_id, task_name, assigned_user) VALUES ($1, $2, NULL)`, 
+               [groupId, taskName]);
+
+  res.redirect('/tasks'); // Redirect back to tasks list
+});
+
+app.post('/random-assign-tasks', async (req, res) => {
+  const groupId = req.session.groupId;
+
+  // Get all unassigned tasks
+  const tasks = await db.any(`SELECT id FROM tasks WHERE group_id = $1 AND assigned_user IS NULL`, [groupId]);
+
+  // Get all group members
+  const members = await db.any(`SELECT username FROM users WHERE group_id = $1`, [groupId]);
+
+  if (tasks.length === 0 || members.length === 0) {
+      return res.status(400).send("No unassigned tasks or no group members.");
+  }
+
+  // Assign tasks randomly
+  for (const task of tasks) {
+      const randomMember = members[Math.floor(Math.random() * members.length)].username;
+      await db.none(`UPDATE tasks SET assigned_user = $1 WHERE id = $2`, [randomMember, task.id]);
+  }
+
+  res.redirect('/tasks');
+});
+
+
+app.post('/complete-task/:id', async (req, res) => {
+  const taskId = req.params.id;
+
+  // Get assigned user of the task
+  const task = await db.one(`SELECT assigned_user FROM tasks WHERE id = $1`, [taskId]);
+
+  // Update user's high_score
+  await db.none(`UPDATE users SET high_score = high_score + 10 WHERE username = $1`, [task.assigned_user]);
+
+  //  Mark task as completed
+  await db.none(`UPDATE tasks SET completed = TRUE WHERE id = $1`, [taskId]);
+
+  res.redirect('/tasks');
+});
+
+app.get('/tasks', async (req, res) => {
+  const groupId = req.session.groupId;
+
+  if (!groupId) {
+      return res.redirect('/group-selection');
+  }
+
+  // get only incomplete tasks
+  const tasks = await db.any(`SELECT * FROM tasks WHERE group_id = $1 AND completed = FALSE`, [groupId]);
+
+  res.render('pages/tasks', { tasks });
+});
+
+
 // test case written
 app.get('/settings', (req, res) => {
   res.status(200).render('pages/settings');
