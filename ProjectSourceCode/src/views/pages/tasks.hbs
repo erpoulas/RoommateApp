@@ -43,14 +43,43 @@
       {{/each}}
     </div>
   </div>
+
+  <!-- Weekly Tasks -->
+  <div class="task-section">
+    <h2>WEEKLY <span class="add-task" onclick="toggleTaskForm()">➕</span></h2>
+    <button class="randomize-button" onclick="randomizeTasks()">RANDOMIZE</button>
+    <div class="task-list">
+      {{#each tasks}}
+        {{#if (eq frequency 'weekly')}}
+          <div class="task-item">
+            <span class="user-icon">{{assigned_user.[0]}}</span>
+            <span class="task-name">{{task_name}}</span>
+            <input type="checkbox" onclick="completeTask({{id}})">
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+  </div>
+
+  <!-- Monthly Tasks -->
+  <div class="task-section">
+    <h2>MONTHLY <span class="add-task" onclick="toggleTaskForm()">➕</span></h2>
+    <button class="randomize-button" onclick="randomizeTasks()">RANDOMIZE</button>
+    <div class="task-list">
+      {{#each tasks}}
+        {{#if (eq frequency 'monthly')}}
+          <div class="task-item">
+            <span class="user-icon">{{assigned_user.[0]}}</span>
+            <span class="task-name">{{task_name}}</span>
+            <input type="checkbox" onclick="completeTask({{id}})">
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+  </div>
 </div>
 
 <script>
-  function toggleTaskForm() {
-    const form = document.getElementById("taskForm");
-    form.classList.toggle("hidden");
-  }
-
   function addTask() {
     const taskName = document.getElementById("taskNameInput").value;
 
@@ -65,4 +94,23 @@
       body: JSON.stringify({ taskName })
     }).then(() => location.reload());
   }
+
+  function toggleTaskForm() {
+    console.log("🟢 toggleTaskForm() function was called!");
+
+    const form = document.getElementById("taskForm");
+
+    if (!form) {
+        console.error("❌ ERROR: Element with ID 'taskForm' not found!");
+        return;
+    }
+
+    console.log("🔄 Toggling visibility...");
+    form.classList.toggle("hidden");
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    console.log("✅ JavaScript is loaded!");
+  });
+
 </script>

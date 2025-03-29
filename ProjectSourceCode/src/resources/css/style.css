@@ -446,8 +446,14 @@ html, body{
 }
 
 /* Hide the form by default */
-.hidden {
+/* .hidden {
   display: none;
+} */
+
+.hidden {
+  display: none !important;
+  visibility: hidden;
+  opacity: 0;
 }
 
 /* Task input form */
@@ -480,3 +486,8 @@ html, body{
 .add-task-form button:hover {
   background-color: #A8B351;
 }
+
+/* #taskForm {
+  display: flex !important;
+} */
+
