@@ -26,6 +26,9 @@ const hbs = handlebars.create({
   extname: 'hbs',
   layoutsDir: __dirname + '/views/layouts',
   partialsDir: __dirname + '/views/partials',
+  helpers: {
+      eq: (a, b) => a === b // Custom helper to check if values are equal
+  }
 });
 /*
 hbs.handlebars.keyboardTyping('range', (start, end) => {

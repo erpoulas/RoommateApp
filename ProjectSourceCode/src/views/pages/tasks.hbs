@@ -1,27 +1,46 @@
 <h1>Group Tasks</h1>
-<ul>
-  {{#each tasks}}
-    <li>
-      {{task_name}} - 
-      {{#if assigned_user}}
-        Assigned to: {{assigned_user}}
-      {{else}}
-        <span>Unassigned</span>
-      {{/if}}
+<!-- Always show the input box -->
+<div class="add-task-container">
+  <form method="post" action="/add-task">
+    <input type="text" name="taskName" placeholder="Enter a new task" required>
+    <button type="submit">Add Task</button>
+  </form>
+</div>
 
-      <!-- Show "Mark Complete" button only if task is assigned to the logged-in user -->
-      {{#if (eq assigned_user ../username)}}
-        <button onclick="completeTask({{id}})">Mark Complete</button>
-      {{/if}}
-    </li>
-  {{else}}
-    <p>No tasks available.</p>
-  {{/each}}
-</ul>
+<!-- If tasks exist, show them -->
+{{#if tasks.length}}
+  <ul>
+    {{#each tasks}}
+      <li>
+        {{task_name}} - 
+        {{#if assigned_user}}
+          Assigned to: {{assigned_user}}
+        {{else}}
+          <span>Unassigned</span>
+        {{/if}}
+
+        <!-- Only show "Mark Complete" button if assigned to logged-in user -->
+        {{#if (eq assigned_user ../username)}}
+          <button onclick="completeTask({{id}})">Mark Complete</button>
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+
+  <button onclick="randomizeTasks()">Randomly Assign Tasks</button>
+
+{{else}}
+  <p>No tasks available yet.</p>
+{{/if}}
 
 <script>
   function completeTask(taskId) {
     fetch(`/complete-task/${taskId}`, { method: 'POST' })
+      .then(() => location.reload());
+  }
+
+  function randomizeTasks() {
+    fetch('/random-assign-tasks', { method: 'POST' })
       .then(() => location.reload());
   }
 </script>
