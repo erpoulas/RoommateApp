@@ -342,3 +342,105 @@ html, body{
   width: 185px;
   height: 179px;
 }
+
+/* Page container */
+.tasks-page {
+  padding: 20px;
+  background-color: #0F172A;
+  color: #BAC366;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header */
+.tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.add-task-icon {
+  font-size: 32px;
+  color: #BAC366;
+}
+
+.settings-icon {
+  font-size: 24px;
+  color: #BAC366;
+  cursor: pointer;
+}
+
+/* Task Sections */
+.task-section {
+  margin-top: 20px;
+}
+
+.task-section h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #BAC366;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-task {
+  font-size: 16px;
+  cursor: pointer;
+  color: #BAC366;
+}
+
+/* Task List */
+.task-list {
+  background-color: #1E293B;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #F8FAFC;
+  color: #1E293B;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+/* User Icons */
+.user-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  background-color: #BAC366;
+  color: #1E293B;
+}
+
+/* Checkbox Styling */
+.task-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #BAC366;
+}
+
+/* Randomize Button */
+.randomize-button {
+  background-color: #BAC366;
+  color: #1E293B;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.randomize-button:hover {
+  background-color: #A8B351;
+}

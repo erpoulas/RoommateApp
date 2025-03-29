@@ -308,8 +308,13 @@ app.get('/tasks', async (req, res) => {
       [groupId]
   );
 
-  res.render('pages/tasks', { tasks, username });
+  res.render('pages/tasks', {
+    tasks: tasks,
+    username: username,
+    pageClass: 'homepage'
+  });
 });
+
 
 
 
