@@ -4,7 +4,6 @@ html, body{
   padding: 0;
   width: 100%;
   height: 100%;
-  /* overflow-x: hidden; */
   position: relative;
 }
 
@@ -258,91 +257,39 @@ html, body{
   background-color: #081219;
 }
 
-/* Shared styles for all buttons */
-/* .group-btn {
-  display: flex;
-  width: 185px;
-  height: 179px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-
-  border-radius: 100px;
-  background: #BAC366;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-
-} */
-
-/* Specific Button Styles */
-
-/* Task List Button */
-/* .group-btn.task-list {
-  border: 7px solid #3FC5E4;
-  top: 296px;
-  left: -9px;
-} */
-
-/* Group Calendar Button */
-/* .group-btn.group-calendar {
-  border: 7px solid #9826D1;
-  top: 296px;
-  left: 231px;
-} */
-
-/* Leaderboard Button */
-/* .group-btn.leaderboard {
-  border: 6px solid #F6FF00;
-  top: 505px;
-  left: -5px;
-} */
-
-/* Remind Button */
-/* .group-btn.remind {
-  border: 5px solid #F30;
-  top: 697px;
-  left: 104px;
-} */
-
-/* .group-btn.weekly-roundup{
-  border: 7px solid #53C688;
-  top: 223px;
-  left: 100px;
-} */
-
-/* Button Container Styling */
-/* Button Container Positioned Relative to Background */
-
-/* .button-container {
-  position: absolute; 
-  top: 20%; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap; 
-  z-index: 10; 
-} */
-/* Group Page Container */
 .group-page {
+  display: flex;
+  justify-content: space-between; /* Spread left and right columns */
+  align-items: flex-start; /* Align items to the top */
   width: 100%;
-  height: 100vh;  /* Ensure the page takes full height */
-  background-size: contain;  /* Fit the background image proportionally */
-  background-repeat: no-repeat;  /* Prevent background repetition */
-  background-position: center center;  /* Center the background image */
-  background-attachment: fixed;  /* Ensure the background stays fixed while scrolling */
-  position: relative;  /* Set as relative for absolute positioning of buttons */
-  /* Background image is already applied dynamically via {{pageClass}} */
+  height: 100%; /* Ensure full height */
+  padding-top: 100px; /* Adjust to position buttons further down */
 }
 
-/* Group Buttons */
-.group-btn {
-  position: absolute;  /* Absolute positioning for precise button placement */
+.left-column, .right-column {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 30px; /* Space between buttons */
+  flex: 1; /* Make sure both columns take equal space */
+}
+
+.left-column {
+  align-items: flex-start; /* Align buttons to the left */
+}
+
+.right-column {
+  align-items: flex-start; /* Align buttons to the right */
+}
+
+.remind-container {
+  display: flex;
+  justify-content: center; /* Center the container horizontally */
+  width: 100%; /* Full width */
+  position: absolute; /* Position it at the bottom */
+  bottom: 30px; /* Adjust distance from the bottom */
+}
+
+.group-btn {
   width: 185px;
   height: 179px;
   border-radius: 100px;
@@ -354,35 +301,35 @@ html, body{
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Specific Button Styles */
-.group-btn.task-list {
+.group-btn.remind {
+  margin: 0; /* Remove any margin */
+}
+
+
+
+/* Adjust these values to position buttons correctly */
+/* .group-btn.task-list {
   border: 7px solid #3FC5E4;
-  top: 296px;  /* Fine-tune these pixel values */
-  left: -9px;  /* Fine-tune these pixel values */
 }
 
 .group-btn.group-calendar {
   border: 7px solid #9826D1;
-  top: 296px;
-  left: 231px;  /* Fine-tune these pixel values */
 }
 
 .group-btn.leaderboard {
   border: 7px solid #F6FF00;
-  top: 505px;  /* Fine-tune these pixel values */
-  left: -5px;  /* Fine-tune these pixel values */
 }
 
 .group-btn.weekly-roundup {
   border: 7px solid #53C688;
-  top: 505px;  /* Fine-tune these pixel values */
-  left: 223px;  /* Fine-tune these pixel values */
 }
 
 .group-btn.remind {
   border: 7px solid #F30;
-  top: 697px;  /* Fine-tune these pixel values */
-  left: 104px;  /* Fine-tune these pixel values */
-}
+} */
+
