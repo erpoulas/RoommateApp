@@ -256,39 +256,43 @@ html, body{
 .group-button:hover {
   background-color: #081219;
 }
-
+/* Main Page Layout */
 .group-page {
   display: flex;
-  justify-content: space-between; /* Spread left and right columns */
-  align-items: flex-start; /* Align items to the top */
+  justify-content: center; /* Center the columns */
+  align-items: flex-start; /* Align the columns to the top */
   width: 100%;
-  height: 100%; /* Ensure full height */
-  padding-top: 100px; /* Adjust to position buttons further down */
+  height: 100vh; /* Full viewport height */
+  padding-top: 50px; /* Adjust to position buttons further down */
 }
 
-.left-column, .right-column {
+.left-column{
+  /* display: flex;
+  flex-direction: column; 
+  gap: 30px; 
+  width: 100%; 
+  align-items: center;  */
   display: flex;
-  flex-direction: column; /* Stack buttons vertically */
-  gap: 30px; /* Space between buttons */
-  flex: 1; /* Make sure both columns take equal space */
-}
-
-.left-column {
-  align-items: flex-start; /* Align buttons to the left */
+  justify-content: center; /* Center horizontally */
+  width: 40%; /* Full width of the page */
+  position: fixed; /* Position fixed relative to the viewport */
+  bottom: 200px; /* Adjust distance from the bottom */
 }
 
 .right-column {
-  align-items: flex-start; /* Align buttons to the right */
-}
-
-.remind-container {
+  /* display: flex;
+  flex-direction: column; 
+  gap: 30px; 
+  width: 100%; 
+  align-items: center;  */
   display: flex;
-  justify-content: center; /* Center the container horizontally */
-  width: 100%; /* Full width */
-  position: absolute; /* Position it at the bottom */
-  bottom: 30px; /* Adjust distance from the bottom */
+  justify-content: center; /* Center horizontally */
+  width: 40%; /* Full width of the page */
+  position: fixed; /* Position fixed relative to the viewport */
+  bottom: 400px; /* Adjust distance from the bottom */
 }
 
+/* Styling for the group buttons */
 .group-btn {
   width: 185px;
   height: 179px;
@@ -306,30 +310,17 @@ html, body{
   align-items: center;
 }
 
-.group-btn.remind {
-  margin: 0; /* Remove any margin */
-}
-
-
-
-/* Adjust these values to position buttons correctly */
-/* .group-btn.task-list {
-  border: 7px solid #3FC5E4;
-}
-
-.group-btn.group-calendar {
-  border: 7px solid #9826D1;
-}
-
-.group-btn.leaderboard {
-  border: 7px solid #F6FF00;
-}
-
-.group-btn.weekly-roundup {
-  border: 7px solid #53C688;
+/* Center the "Remind" button */
+.remind-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  width: 100%; /* Full width of the page */
+  position: fixed; /* Position fixed relative to the viewport */
+  bottom: 30px; /* Adjust distance from the bottom */
 }
 
 .group-btn.remind {
-  border: 7px solid #F30;
-} */
-
+  margin: 0;
+  width: 185px;
+  height: 179px;
+}
