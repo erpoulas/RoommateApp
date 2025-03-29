@@ -20,8 +20,12 @@ html, body{
   background-image: url('/img/leaderboard-bg.svg');
 }
 
+.homepage{
+  background-image: url('/img/home.svg');
+}
+
 /* Background image settings */
-.welcome-page, .blank-page, .leaderboard-page {
+.welcome-page, .blank-page, .leaderboard-page, .homepage {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -267,11 +271,6 @@ html, body{
 }
 
 .left-column{
-  /* display: flex;
-  flex-direction: column; 
-  gap: 30px; 
-  width: 100%; 
-  align-items: center;  */
   display: flex;
   justify-content: center; /* Center horizontally */
   width: 40%; /* Full width of the page */
@@ -280,16 +279,35 @@ html, body{
 }
 
 .right-column {
-  /* display: flex;
-  flex-direction: column; 
-  gap: 30px; 
-  width: 100%; 
-  align-items: center;  */
   display: flex;
   justify-content: center; /* Center horizontally */
   width: 40%; /* Full width of the page */
   position: fixed; /* Position fixed relative to the viewport */
   bottom: 400px; /* Adjust distance from the bottom */
+}
+
+.group-btn.task-list {
+  border: 7px solid #3FC5E4;
+
+}
+
+.group-btn.group-calendar {
+  border: 7px solid #9826D1;
+}
+
+.group-btn.leaderboard {
+  border: 7px solid #F6FF00;
+
+}
+
+.group-btn.weekly-roundup {
+  border: 7px solid #53C688;
+
+}
+
+.group-btn.remind {
+  border: 7px solid #F30;
+
 }
 
 /* Styling for the group buttons */

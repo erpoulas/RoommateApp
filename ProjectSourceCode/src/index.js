@@ -260,7 +260,7 @@ app.get('/home', (req, res) => {
     res.status(200).render('pages/home', {
       username: req.session.user,
       high_score: rows[0].high_score,
-      pageClass: 'blank-page'
+      pageClass: 'homepage'
     });
   })
   .catch(err => {
