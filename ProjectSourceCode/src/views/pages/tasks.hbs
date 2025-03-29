@@ -1,12 +1,4 @@
-<h1>Task List</h1>
-
-<!-- Task Creation Form -->
-<form method="post" action="/add-task">
-  <input type="text" name="taskName" placeholder="Enter a new task" required>
-  <button type="submit">Add Task</button>
-</form>
-
-<!-- Task List -->
+<h1>Group Tasks</h1>
 <ul>
   {{#each tasks}}
     <li>
@@ -16,20 +8,18 @@
       {{else}}
         <span>Unassigned</span>
       {{/if}}
-      <button onclick="completeTask({{id}})">Mark Complete</button>
+
+      <!-- Show "Mark Complete" button only if task is assigned to the logged-in user -->
+      {{#if (eq assigned_user ../username)}}
+        <button onclick="completeTask({{id}})">Mark Complete</button>
+      {{/if}}
     </li>
+  {{else}}
+    <p>No tasks available.</p>
   {{/each}}
 </ul>
 
-<!-- Random Assignment Button -->
-<button onclick="randomizeTasks()">Randomly Assign Tasks</button>
-
 <script>
-  function randomizeTasks() {
-    fetch('/random-assign-tasks', { method: 'POST' })
-      .then(() => location.reload());
-  }
-
   function completeTask(taskId) {
     fetch(`/complete-task/${taskId}`, { method: 'POST' })
       .then(() => location.reload());

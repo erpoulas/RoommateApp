@@ -267,34 +267,47 @@ app.post('/random-assign-tasks', async (req, res) => {
   res.redirect('/tasks');
 });
 
-
 app.post('/complete-task/:id', async (req, res) => {
   const taskId = req.params.id;
+  const username = req.session.user;
 
-  // Get assigned user of the task
+  // Get task details
   const task = await db.one(`SELECT assigned_user FROM tasks WHERE id = $1`, [taskId]);
 
-  // Update user's high_score
-  await db.none(`UPDATE users SET high_score = high_score + 10 WHERE username = $1`, [task.assigned_user]);
+  // Prevent unauthorized users from completing the task
+  if (task.assigned_user !== username) {
+      return res.status(403).send("You can only complete tasks assigned to you.");
+  }
 
-  //  Mark task as completed
+  // Update user's high_score
+  await db.none(`UPDATE users SET high_score = high_score + 10 WHERE username = $1`, [username]);
+
+  // Mark task as completed
   await db.none(`UPDATE tasks SET completed = TRUE WHERE id = $1`, [taskId]);
 
   res.redirect('/tasks');
 });
 
+
 app.get('/tasks', async (req, res) => {
   const groupId = req.session.groupId;
+  const username = req.session.user;
 
   if (!groupId) {
       return res.redirect('/group-selection');
   }
 
-  // get only incomplete tasks
-  const tasks = await db.any(`SELECT * FROM tasks WHERE group_id = $1 AND completed = FALSE`, [groupId]);
+  // Get all incomplete tasks for the group
+  const tasks = await db.any(`
+      SELECT * FROM tasks 
+      WHERE group_id = $1 
+      AND completed = FALSE`, 
+      [groupId]
+  );
 
-  res.render('pages/tasks', { tasks });
+  res.render('pages/tasks', { tasks, username });
 });
+
 
 
 // test case written
