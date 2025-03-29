@@ -444,3 +444,39 @@ html, body{
 .randomize-button:hover {
   background-color: #A8B351;
 }
+
+/* Hide the form by default */
+.hidden {
+  display: none;
+}
+
+/* Task input form */
+.add-task-form {
+  background-color: #1E293B;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.add-task-form input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #BAC366;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.add-task-form button {
+  background-color: #BAC366;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.add-task-form button:hover {
+  background-color: #A8B351;
+}

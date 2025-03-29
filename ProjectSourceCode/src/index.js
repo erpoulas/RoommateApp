@@ -235,18 +235,36 @@ app.use(auth);
 
 app.post('/add-task', async (req, res) => {
   const { taskName } = req.body;
-  const groupId = req.session.groupId; // Get user's group
+  const groupId = req.session.groupId;
 
-  if (!groupId) {
-      return res.redirect('/group-selection'); // User must be in a group
+  if (!taskName || !groupId) {
+      return res.status(400).send("Invalid task data.");
   }
 
-  // Insert task with no assigned user
-  await db.none(`INSERT INTO tasks (group_id, task_name, assigned_user) VALUES ($1, $2, NULL)`, 
-               [groupId, taskName]);
+  await db.none(
+      `INSERT INTO tasks (task_name, group_id, assigned_user, completed, frequency) 
+       VALUES ($1, $2, NULL, FALSE, 'daily')`,
+      [taskName, groupId]
+  );
 
-  res.redirect('/tasks'); // Redirect back to tasks list
+  res.status(200).send("Task added.");
 });
+
+
+// app.post('/add-task', async (req, res) => {
+//   const { taskName } = req.body;
+//   const groupId = req.session.groupId; // Get user's group
+
+//   if (!groupId) {
+//       return res.redirect('/group-selection'); // User must be in a group
+//   }
+
+//   // Insert task with no assigned user
+//   await db.none(`INSERT INTO tasks (group_id, task_name, assigned_user) VALUES ($1, $2, NULL)`, 
+//                [groupId, taskName]);
+
+//   res.redirect('/tasks'); // Redirect back to tasks list
+// });
 
 app.post('/random-assign-tasks', async (req, res) => {
   const groupId = req.session.groupId;

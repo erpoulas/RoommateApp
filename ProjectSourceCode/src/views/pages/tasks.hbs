@@ -1,8 +1,14 @@
 <div class="tasks-page">
   <!-- Header -->
   <div class="tasks-header">
-    <h1><span class="add-task-icon">➕</span> ADD TASKS</h1>
+    <h1><span class="add-task-icon" onclick="toggleTaskForm()">➕</span> ADD TASKS</h1>
     <span class="settings-icon">⚙️</span>
+  </div>
+
+  <!-- Add Task Form (Initially Hidden) -->
+  <div id="taskForm" class="add-task-form hidden">
+    <input type="text" id="taskNameInput" placeholder="Enter a task">
+    <button onclick="addTask()">Add Task</button>
   </div>
 
   <!-- "Up for Grabs" (Unassigned Tasks) -->
@@ -23,7 +29,7 @@
 
   <!-- Daily Tasks -->
   <div class="task-section">
-    <h2>DAILY <span class="add-task">➕</span></h2>
+    <h2>DAILY <span class="add-task" onclick="toggleTaskForm()">➕</span></h2>
     <button class="randomize-button" onclick="randomizeTasks()">RANDOMIZE</button>
     <div class="task-list">
       {{#each tasks}}
@@ -37,48 +43,26 @@
       {{/each}}
     </div>
   </div>
-
-  <!-- Weekly Tasks -->
-  <div class="task-section">
-    <h2>WEEKLY <span class="add-task">➕</span></h2>
-    <div class="task-list">
-      {{#each tasks}}
-        {{#if (eq frequency 'weekly')}}
-          <div class="task-item">
-            <span class="user-icon">{{assigned_user.[0]}}</span>
-            <span class="task-name">{{task_name}}</span>
-            <input type="checkbox" onclick="completeTask({{id}})">
-          </div>
-        {{/if}}
-      {{/each}}
-    </div>
-  </div>
-
-  <!-- Monthly Tasks -->
-  <div class="task-section">
-    <h2>MONTHLY <span class="add-task">➕</span></h2>
-    <div class="task-list">
-      {{#each tasks}}
-        {{#if (eq frequency 'monthly')}}
-          <div class="task-item">
-            <span class="user-icon">{{assigned_user.[0]}}</span>
-            <span class="task-name">{{task_name}}</span>
-            <input type="checkbox" onclick="completeTask({{id}})">
-          </div>
-        {{/if}}
-      {{/each}}
-    </div>
-  </div>
 </div>
 
 <script>
-  function completeTask(taskId) {
-    fetch(`/complete-task/${taskId}`, { method: 'POST' })
-      .then(() => location.reload());
+  function toggleTaskForm() {
+    const form = document.getElementById("taskForm");
+    form.classList.toggle("hidden");
   }
 
-  function randomizeTasks() {
-    fetch('/random-assign-tasks', { method: 'POST' })
-      .then(() => location.reload());
+  function addTask() {
+    const taskName = document.getElementById("taskNameInput").value;
+
+    if (!taskName.trim()) {
+      alert("Please enter a task name!");
+      return;
+    }
+
+    fetch('/add-task', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ taskName })
+    }).then(() => location.reload());
   }
 </script>
