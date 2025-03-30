@@ -461,38 +461,41 @@ app.post('/score', (req, res) => {
 
 
 app.get('/leaderboard', function (req, res) {
-  // loads the leaderboard by fetching all the users from the database
-  // users are ranked by their highest hard mode score
-  
-    var usersRanked = `select * from users order by high_score desc;`
-  
-    // use task to execute multiple queries
-    db.any(usersRanked)
-      // if query execution succeeds
-      // query results can be obtained
-      // as shown below
-      .then(data => {
-        users = data;
-        console.log("user data fetched");
-        console.log(data);
-        res.status(200).render('pages/leaderboard', {
-          users,
-          pageClass: 'homepage'
-        });
-      })
-      // if query execution fails
-      // send error message
-      .catch(err => {
-        console.log("Error users were not fetched")
-        console.error(err.message);
-        res.status(200).render('pages/leaderboard', {
-          message: 'Error fetching using data',
-          pageClass: 'homepage'
-        });
-      });
+  console.log("Session Data:", req.session);
+  // Ensure user is authenticated and has a group_id
+  if (!req.session.username || !req.session.group_id) {
+    return res.status(403).render('pages/leaderboard', {
+      message: 'You must be logged in to view the leaderboard.',
+      pageClass: 'homepage'
+    });
   }
-  
-  );
+
+  const groupId = req.session.group_id; // Retrieve user's group ID from session
+
+  // Query: Get users from the same group, ordered by high_score
+  const usersRanked = `
+    SELECT * FROM users
+    WHERE group_id = $1
+    ORDER BY high_score DESC;
+  `;
+
+  // Execute query
+  db.any(usersRanked, [groupId])
+    .then(data => {
+      console.log("User data fetched:", data);
+      res.status(200).render('pages/leaderboard', {
+        users: data,
+        pageClass: 'homepage'
+      });
+    })
+    .catch(err => {
+      console.error("Error: users were not fetched", err.message);
+      res.status(500).render('pages/leaderboard', {
+        message: 'Error fetching user data',
+        pageClass: 'homepage'
+      });
+    });
+});
 
 module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');
