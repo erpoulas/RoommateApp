@@ -315,23 +315,53 @@ app.post('/complete-task/:taskId', async (req, res) => {
   try {
       const taskId = req.params.taskId;
 
-      // ✅ Ensure the task exists before updating
-      const task = await db.oneOrNone(`SELECT * FROM tasks WHERE id = $1`, [taskId]);
+      // ✅ Fetch the task to get the assigned user
+      const task = await db.oneOrNone(`SELECT assigned_user FROM tasks WHERE id = $1`, [taskId]);
 
       if (!task) {
           return res.status(404).send("Task not found.");
       }
 
-      // ✅ Mark the task as complete
+      if (!task.assigned_user) {
+          return res.status(400).send("Task is unassigned and cannot be completed.");
+      }
+
+      // ✅ Update the task as completed
       await db.none(`UPDATE tasks SET completed = TRUE WHERE id = $1`, [taskId]);
 
-      console.log(`✅ Task ${taskId} marked as complete.`);
-      res.status(200).send(`Task ${taskId} completed.`);
+      // ✅ Increase the assigned user's high_score by 1
+      await db.none(`UPDATE users SET high_score = high_score + 100 WHERE username = $1`, [task.assigned_user]);
+
+      console.log(`✅ Task ${taskId} completed by ${task.assigned_user}. Score updated.`);
+      res.status(200).send(`Task ${taskId} completed by ${task.assigned_user}. Score increased.`);
   } catch (err) {
       console.error("❌ ERROR in /complete-task:", err);
       res.status(500).send("Server error while completing task.");
   }
 });
+
+
+// app.post('/complete-task/:taskId', async (req, res) => {
+//   try {
+//       const taskId = req.params.taskId;
+
+//       // ✅ Ensure the task exists before updating
+//       const task = await db.oneOrNone(`SELECT * FROM tasks WHERE id = $1`, [taskId]);
+
+//       if (!task) {
+//           return res.status(404).send("Task not found.");
+//       }
+
+//       // ✅ Mark the task as complete
+//       await db.none(`UPDATE tasks SET completed = TRUE WHERE id = $1`, [taskId]);
+
+//       console.log(`✅ Task ${taskId} marked as complete.`);
+//       res.status(200).send(`Task ${taskId} completed.`);
+//   } catch (err) {
+//       console.error("❌ ERROR in /complete-task:", err);
+//       res.status(500).send("Server error while completing task.");
+//   }
+// });
 
 
 

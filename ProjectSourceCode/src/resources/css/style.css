@@ -346,7 +346,7 @@ html, body{
 /* Page container */
 .tasks-page {
   padding: 20px;
-  background-color: #0F172A;
+  background-color: #1C3548;
   color: #BAC366;
   font-family: 'Inter', sans-serif;
 }
@@ -389,14 +389,6 @@ html, body{
   font-size: 16px;
   cursor: pointer;
   color: #BAC366;
-}
-
-/* Task List */
-.task-list {
-  background-color: #1E293B;
-  padding: 15px;
-  border-radius: 12px;
-  margin-top: 10px;
 }
 
 .task-item {
