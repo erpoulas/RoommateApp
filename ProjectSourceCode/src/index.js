@@ -234,21 +234,44 @@ app.use(auth);
 
 
 app.post('/add-task', async (req, res) => {
-  const { taskName } = req.body;
-  const groupId = req.session.groupId;
+  try {
+      const { taskName, frequency } = req.body;
+      const groupId = req.session.groupId;
 
-  if (!taskName || !frequency || !groupId) {
-    return res.status(400).send("Invalid task data.");
-}
+      if (!taskName || !frequency || !groupId) {
+          return res.status(400).send("Invalid task data.");
+      }
 
-  await db.none(
-      `INSERT INTO tasks (task_name, group_id, assigned_user, completed, frequency) 
-       VALUES ($1, $2, NULL, FALSE, 'daily')`,
-      [taskName, groupId]
-  );
+      await db.none(
+          `INSERT INTO tasks (task_name, group_id, assigned_user, completed, frequency) 
+           VALUES ($1, $2, NULL, FALSE, $3)`,
+          [taskName, groupId, frequency]
+      );
 
-  res.status(200).send("Task added.");
+      res.status(200).send("Task added.");
+  } catch (err) {
+      console.error("❌ ERROR in /add-task:", err);
+      res.status(500).send("Server error while adding task.");
+  }
 });
+
+
+// app.post('/add-task', async (req, res) => {
+//   const { taskName } = req.body;
+//   const groupId = req.session.groupId;
+
+//   if (!taskName || !frequency || !groupId) {
+//     return res.status(400).send("Invalid task data.");
+// }
+
+//   await db.none(
+//       `INSERT INTO tasks (task_name, group_id, assigned_user, completed, frequency) 
+//        VALUES ($1, $2, NULL, FALSE, 'daily')`,
+//       [taskName, groupId]
+//   );
+
+//   res.status(200).send("Task added.");
+// });
 
 
 // app.post('/add-task', async (req, res) => {

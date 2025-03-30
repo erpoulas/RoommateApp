@@ -105,17 +105,31 @@
     const taskName = document.getElementById(`taskName-${frequency}`).value;
 
     if (!taskName.trim()) {
-      alert("Please enter a task name!");
-      return;
+        alert("Please enter a task name!");
+        return;
     }
 
     fetch('/add-task', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ taskName })
-    }).then(() => location.reload());
-  }
-  
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ taskName, frequency })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text); });
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log("✅ Task added:", data);
+        location.reload();
+    })
+    .catch(error => {
+        console.error("❌ Error adding task:", error);
+        alert("Error: " + error.message);
+    });
+}
+
   function randomizeTasks() {
     fetch('/random-assign-tasks', { method: 'POST' })
       .then(() => location.reload());

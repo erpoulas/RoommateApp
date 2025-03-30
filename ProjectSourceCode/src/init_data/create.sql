@@ -18,6 +18,7 @@ CREATE TABLE tasks (
     id SERIAL PRIMARY KEY,
     group_id INT REFERENCES groups(id) ON DELETE CASCADE,
     task_name TEXT NOT NULL,
-    assigned_user VARCHAR(50) REFERENCES users(username) ON DELETE SET NULL, -- 🔥 Assigned user
-    completed BOOLEAN DEFAULT FALSE
+    assigned_user VARCHAR(50) REFERENCES users(username) ON DELETE SET NULL,
+    completed BOOLEAN DEFAULT FALSE,
+    frequency VARCHAR(20) NOT NULL DEFAULT 'daily'
 );
