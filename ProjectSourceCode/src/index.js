@@ -475,14 +475,20 @@ app.get('/leaderboard', function (req, res) {
         users = data;
         console.log("user data fetched");
         console.log(data);
-        res.status(200).render('pages/leaderboard', {users})
+        res.status(200).render('pages/leaderboard', {
+          users,
+          pageClass: 'homepage'
+        });
       })
       // if query execution fails
       // send error message
       .catch(err => {
         console.log("Error users were not fetched")
         console.error(err.message);
-        res.status(500).render('pages/leaderboard', {message: "Error fetching user data"});
+        res.status(200).render('pages/leaderboard', {
+          message: 'Error fetching using data',
+          pageClass: 'homepage'
+        });
       });
   }
   
