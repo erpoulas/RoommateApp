@@ -311,26 +311,28 @@ app.post('/random-assign-tasks', async (req, res) => {
   res.redirect('/tasks');
 });
 
-app.post('/complete-task/:id', async (req, res) => {
-  const taskId = req.params.id;
-  const username = req.session.user;
+app.post('/complete-task/:taskId', async (req, res) => {
+  try {
+      const taskId = req.params.taskId;
 
-  // Get task details
-  const task = await db.one(`SELECT assigned_user FROM tasks WHERE id = $1`, [taskId]);
+      // ✅ Ensure the task exists before updating
+      const task = await db.oneOrNone(`SELECT * FROM tasks WHERE id = $1`, [taskId]);
 
-  // Prevent unauthorized users from completing the task
-  if (task.assigned_user !== username) {
-      return res.status(403).send("You can only complete tasks assigned to you.");
+      if (!task) {
+          return res.status(404).send("Task not found.");
+      }
+
+      // ✅ Mark the task as complete
+      await db.none(`UPDATE tasks SET completed = TRUE WHERE id = $1`, [taskId]);
+
+      console.log(`✅ Task ${taskId} marked as complete.`);
+      res.status(200).send(`Task ${taskId} completed.`);
+  } catch (err) {
+      console.error("❌ ERROR in /complete-task:", err);
+      res.status(500).send("Server error while completing task.");
   }
-
-  // Update user's high_score
-  await db.none(`UPDATE users SET high_score = high_score + 10 WHERE username = $1`, [username]);
-
-  // Mark task as completed
-  await db.none(`UPDATE tasks SET completed = TRUE WHERE id = $1`, [taskId]);
-
-  res.redirect('/tasks');
 });
+
 
 
 app.get('/tasks', async (req, res) => {

@@ -48,7 +48,7 @@
           <div class="task-item">
             <span class="user-icon">{{assigned_user.[0]}}</span>
             <span class="task-name">{{task_name}}</span>
-            <input type="checkbox" onclick="completeTask({{id}})">
+            <input type="checkbox" onclick="completeTask({{id}})" {{#if completed}}checked disabled{{/if}}>
           </div>
         {{/if}}
       {{/each}}
@@ -70,7 +70,7 @@
           <div class="task-item">
             <span class="user-icon">{{assigned_user.[0]}}</span>
             <span class="task-name">{{task_name}}</span>
-            <input type="checkbox" onclick="completeTask({{id}})">
+            <input type="checkbox" onclick="completeTask({{id}})" {{#if completed}}checked disabled{{/if}}>
           </div>
         {{/if}}
       {{/each}}
@@ -92,7 +92,7 @@
           <div class="task-item">
             <span class="user-icon">{{assigned_user.[0]}}</span>
             <span class="task-name">{{task_name}}</span>
-            <input type="checkbox" onclick="completeTask({{id}})">
+            <input type="checkbox" onclick="completeTask({{id}})" {{#if completed}}checked disabled{{/if}}>
           </div>
         {{/if}}
       {{/each}}
@@ -152,5 +152,23 @@
   document.addEventListener("DOMContentLoaded", function() {
     console.log("✅ JavaScript is loaded!");
   });
+
+  function completeTask(taskId) {
+      fetch(`/complete-task/${taskId}`, { method: 'POST' })
+      .then(response => {
+          if (!response.ok) {
+              return response.text().then(text => { throw new Error(text); });
+          }
+          return response.text();
+      })
+      .then(data => {
+          console.log("✅ Task marked as complete:", data);
+          location.reload();
+      })
+      .catch(error => {
+          console.error("❌ Error marking task complete:", error);
+          alert("Error: " + error.message);
+      });
+  }
 
 </script>
