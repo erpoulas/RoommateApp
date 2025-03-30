@@ -115,6 +115,11 @@
       body: JSON.stringify({ taskName })
     }).then(() => location.reload());
   }
+  
+  function randomizeTasks() {
+    fetch('/random-assign-tasks', { method: 'POST' })
+      .then(() => location.reload());
+  }
 
   function toggleTaskForm(type) {
     console.log("🟢 toggleTaskForm() function was called!");
