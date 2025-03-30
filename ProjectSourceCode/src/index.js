@@ -237,9 +237,9 @@ app.post('/add-task', async (req, res) => {
   const { taskName } = req.body;
   const groupId = req.session.groupId;
 
-  if (!taskName || !groupId) {
-      return res.status(400).send("Invalid task data.");
-  }
+  if (!taskName || !frequency || !groupId) {
+    return res.status(400).send("Invalid task data.");
+}
 
   await db.none(
       `INSERT INTO tasks (task_name, group_id, assigned_user, completed, frequency) 

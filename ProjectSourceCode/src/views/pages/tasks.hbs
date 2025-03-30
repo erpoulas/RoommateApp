@@ -1,15 +1,20 @@
 <div class="tasks-page">
   <!-- Header -->
-  <div class="tasks-header">
+  {{!-- <div class="tasks-header">
     <h1><span class="add-task-icon" onclick="toggleTaskForm()">➕</span> ADD TASKS</h1>
     <span class="settings-icon">⚙️</span>
+  </div> --}}
+  <div class="tasks-header">
+    <h1>GROUP TASKS</h1>
   </div>
 
-  <!-- Add Task Form (Initially Hidden) -->
+  <button class="randomize-button" onclick="randomizeTasks()">RANDOMIZE</button>
+
+  {{!-- <!-- Add Task Form (Initially Hidden) -->
   <div id="taskForm" class="add-task-form hidden">
     <input type="text" id="taskNameInput" placeholder="Enter a task">
     <button onclick="addTask()">Add Task</button>
-  </div>
+  </div> --}}
 
   <!-- "Up for Grabs" (Unassigned Tasks) -->
   <div class="task-section">
@@ -31,6 +36,13 @@
   <div class="task-section">
     <h2>DAILY <span class="add-task" onclick="toggleTaskForm()">➕</span></h2>
     <button class="randomize-button" onclick="randomizeTasks()">RANDOMIZE</button>
+    
+    <!-- Task Form (Initially Hidden) -->
+    <div id="taskForm-daily" class="add-task-form hidden">
+      <input type="text" id="taskName-daily" placeholder="Enter a daily task">
+      <button onclick="addTask('daily')">Add Task</button>
+    </div>
+    
     <div class="task-list">
       {{#each tasks}}
         {{#if (eq frequency 'daily')}}
@@ -47,7 +59,12 @@
   <!-- Weekly Tasks -->
   <div class="task-section">
     <h2>WEEKLY <span class="add-task" onclick="toggleTaskForm()">➕</span></h2>
-    <button class="randomize-button" onclick="randomizeTasks()">RANDOMIZE</button>
+    
+    <div id="taskForm-weekly" class="add-task-form hidden">
+      <input type="text" id="taskName-weekly" placeholder="Enter a weekly task">
+      <button onclick="addTask('weekly')">Add Task</button>
+    </div>
+
     <div class="task-list">
       {{#each tasks}}
         {{#if (eq frequency 'weekly')}}
@@ -64,7 +81,12 @@
   <!-- Monthly Tasks -->
   <div class="task-section">
     <h2>MONTHLY <span class="add-task" onclick="toggleTaskForm()">➕</span></h2>
-    <button class="randomize-button" onclick="randomizeTasks()">RANDOMIZE</button>
+    
+    <div id="taskForm-monthly" class="add-task-form hidden">
+      <input type="text" id="taskName-monthly" placeholder="Enter a monthly task">
+      <button onclick="addTask('monthly')">Add Task</button>
+    </div>
+
     <div class="task-list">
       {{#each tasks}}
         {{#if (eq frequency 'monthly')}}
@@ -80,8 +102,8 @@
 </div>
 
 <script>
-  function addTask() {
-    const taskName = document.getElementById("taskNameInput").value;
+  function addTask(frequency) {
+    const taskName = document.getElementById(`taskName-${frequency}`).value;
 
     if (!taskName.trim()) {
       alert("Please enter a task name!");
