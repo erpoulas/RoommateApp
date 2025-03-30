@@ -34,8 +34,7 @@
 
   <!-- Daily Tasks -->
   <div class="task-section">
-    <h2>DAILY <span class="add-task" onclick="toggleTaskForm()">➕</span></h2>
-    <button class="randomize-button" onclick="randomizeTasks()">RANDOMIZE</button>
+    <h2>DAILY <span class="add-task" onclick="toggleTaskForm('daily')">➕</span></h2>
     
     <!-- Task Form (Initially Hidden) -->
     <div id="taskForm-daily" class="add-task-form hidden">
@@ -58,7 +57,7 @@
 
   <!-- Weekly Tasks -->
   <div class="task-section">
-    <h2>WEEKLY <span class="add-task" onclick="toggleTaskForm()">➕</span></h2>
+    <h2>WEEKLY <span class="add-task" onclick="toggleTaskForm('weekly')">➕</span></h2>
     
     <div id="taskForm-weekly" class="add-task-form hidden">
       <input type="text" id="taskName-weekly" placeholder="Enter a weekly task">
@@ -80,7 +79,7 @@
 
   <!-- Monthly Tasks -->
   <div class="task-section">
-    <h2>MONTHLY <span class="add-task" onclick="toggleTaskForm()">➕</span></h2>
+    <h2>MONTHLY <span class="add-task" onclick="toggleTaskForm('monthly')">➕</span></h2>
     
     <div id="taskForm-monthly" class="add-task-form hidden">
       <input type="text" id="taskName-monthly" placeholder="Enter a monthly task">
@@ -117,10 +116,10 @@
     }).then(() => location.reload());
   }
 
-  function toggleTaskForm() {
+  function toggleTaskForm(type) {
     console.log("🟢 toggleTaskForm() function was called!");
 
-    const form = document.getElementById("taskForm");
+    const form = document.getElementById(`taskForm-${type}`);
 
     if (!form) {
         console.error("❌ ERROR: Element with ID 'taskForm' not found!");
