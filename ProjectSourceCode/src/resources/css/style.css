@@ -17,7 +17,7 @@ html, body{
 }
 
 .leaderboard-page {
-  background-image: url('/img/leaderboard-bg.svg');
+  background-image: url('/img/home.svg');
 }
 
 .homepage{
@@ -26,10 +26,10 @@ html, body{
 
 /* Background image settings */
 .welcome-page, .blank-page, .leaderboard-page, .homepage {
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
   position: relative;
+  background-position: top;
 }
 
 /* Centering overlay content */
