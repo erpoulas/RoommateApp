@@ -365,7 +365,7 @@ html, body{
   color: #BAC366;
 }
 
-.settings-icon {
+.pr-icon {
   font-size: 24px;
   color: #BAC366;
   cursor: pointer;
@@ -571,4 +571,48 @@ html, body{
   background-color: #CD7F32;
   color: #1C3548;
   font-weight: bold;
+}
+
+/* Navbar Styling */
+.navbar {
+  width: 100%;
+  background-color: #101F2A;
+  padding: 15px 0;
+  display: flex;
+  justify-content: center; /* Center the nav links */
+  gap: 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000; /* Ensures navbar stays on top */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Nav Links */
+.nav-link {
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #BAC366;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+/* Hover Effect */
+.nav-link:hover {
+  background-color: #BAC366;
+  color: #101F2A;
+}
+
+/* Home Link Specific Styling */
+.home-link {
+  border: 2px solid #3FC5E4;
+  padding: 8px 16px;
+}
+
+/* Profile Link Specific Styling */
+.profile-link {
+  border: 2px solid #9826D1;
+  padding: 8px 16px;
 }
