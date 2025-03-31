@@ -1,19 +1,37 @@
-<table>
-            <thead>
-              <tr>
-                  <th>Username</th>
-                  <th>Karma</th>
-              </tr>
-            </thead>
+{{!-- <table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Karma</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each users}}
+        <tr>
+            <td>{{username}} </td>
+            <td>{{high_score}}</td>
+            {{/each}}
+    </tbody>
+</table> --}}
 
-            <tbody>
-
-                {{#each users}}
-                <tr>
-                    <td>{{username}} </td>
-                    <td>{{high_score}}</td>
-                {{/each}}
-           
-            </tbody>
-
-</table>
+<div class="leaderboard-page">
+    <h2 class="leaderboard-title">Leaderboard</h2>
+    <table class="leaderboard-table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Username</th>
+                <th>Karma</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr>
+                <td class="rank">{{@index}}</td> <!-- Ranks users based on index -->
+                <td>{{username}}</td>
+                <td>{{high_score}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
