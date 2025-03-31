@@ -671,3 +671,32 @@ html, body{
   display: flex;
   justify-content: center; /* Centers the whole nav */
 }
+
+/* Logout Button */
+.logout-button {
+  display: inline-block;
+  background-color: #F30; /* Red button */
+  color: #FFFFFF; /* White text */
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 2px solid #D00; /* Darker red border */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover Effect */
+.logout-button:hover {
+  background-color: #D00;
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Center the Button */
+.logout-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
