@@ -573,8 +573,6 @@ html, body{
   font-weight: bold;
 }
 
-
-/* Custom Navbar */
 /* Custom Navbar */
 .custom-navbar {
   width: 100%;
@@ -589,7 +587,7 @@ html, body{
 
 /* Navbar Collapse Background */
 #navbarNav {
-  background-color: #1E1E1E; /* Darker background */
+  background-color: #101F2A; /* Darker background */
   padding: 10px;
   border-radius: 8px;
 }
@@ -603,13 +601,6 @@ html, body{
 
 .navbar-toggler-icon {
   filter: invert(100%);
-}
-
-/* Navbar Collapse Background */
-#navbarNav {
-  background-color: #000080;
-  padding: 10px;
-  border-radius: 8px;
 }
 
 /* Navbar Links */
@@ -642,4 +633,41 @@ html, body{
 /* Settings Button */
 .nav-settings {
   border: 2px solid #9826D1;
+}
+
+/* Remove unwanted borders */
+.custom-navbar,
+.navbar,
+.navbar-nav,
+#navbarNav {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* If there's an unwanted padding/margin, reset it */
+.custom-navbar {
+    padding: 10px 0;
+    margin: 0;
+}
+
+/* Ensure the navbar collapse (dropdown on mobile) has no border */
+#navbarNav {
+    border-radius: 0 !important;
+    border: none !important;
+}
+
+/* Center Navbar Links */
+.navbar-nav {
+  width: 100%; /* Ensures full width */
+  display: flex;
+  justify-content: center; /* Centers the items horizontally */
+  align-items: center;
+  gap: 20px; /* Adds space between buttons */
+}
+
+/* Make sure the navbar itself doesn't interfere */
+.custom-navbar .container-fluid {
+  display: flex;
+  justify-content: center; /* Centers the whole nav */
 }
