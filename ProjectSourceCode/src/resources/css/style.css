@@ -573,46 +573,73 @@ html, body{
   font-weight: bold;
 }
 
-/* Navbar Styling */
-.navbar {
+
+/* Custom Navbar */
+/* Custom Navbar */
+.custom-navbar {
   width: 100%;
-  background-color: #101F2A;
-  padding: 15px 0;
-  display: flex;
-  justify-content: center; /* Center the nav links */
-  gap: 30px;
+  background-color: #1C3548; /* Dark muted navy */
+  padding: 10px 0;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000; /* Ensures navbar stays on top */
+  z-index: 1000;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Nav Links */
+/* Navbar Collapse Background */
+#navbarNav {
+  background-color: #1E1E1E; /* Darker background */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+
+/* Navbar Toggler Button */
+.navbar-toggler {
+  border: none;
+  background: none;
+}
+
+.navbar-toggler-icon {
+  filter: invert(100%);
+}
+
+/* Navbar Collapse Background */
+#navbarNav {
+  background-color: #000080;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Navbar Links */
 .nav-link {
-  text-decoration: none;
   font-size: 18px;
   font-weight: bold;
   text-transform: uppercase;
-  color: #BAC366;
+  color: #BAC366 !important;
   padding: 10px 20px;
   border-radius: 8px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Hover Effect */
 .nav-link:hover {
   background-color: #BAC366;
-  color: #101F2A;
+  color: #101F2A !important;
 }
 
-/* Home Link Specific Styling */
-.home-link {
+/* Home Button */
+.nav-home {
   border: 2px solid #3FC5E4;
-  padding: 8px 16px;
 }
 
-/* Profile Link Specific Styling */
-.profile-link {
+/* Leaderboard Button */
+.nav-leaderboard {
+  border: 2px solid #F6FF00;
+}
+
+/* Settings Button */
+.nav-settings {
   border: 2px solid #9826D1;
-  padding: 8px 16px;
 }
