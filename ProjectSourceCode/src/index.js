@@ -461,9 +461,11 @@ app.post('/score', (req, res) => {
 
 
 app.get('/leaderboard', function (req, res) {
+  console.log("username", req.session.user);
+  console.log("group id", req.session.groupId);
   console.log("Session Data:", req.session);
   // Ensure user is authenticated and has a group_id
-  if (!req.session.username || !req.session.group_id) {
+  if (!req.session.user || !req.session.groupId) {
     return res.status(403).render('pages/leaderboard', {
       message: 'You must be logged in to view the leaderboard.',
       pageClass: 'homepage'
