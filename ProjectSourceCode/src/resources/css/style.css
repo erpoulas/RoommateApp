@@ -672,29 +672,90 @@ html, body{
   justify-content: center; /* Centers the whole nav */
 }
 
+/* Apply same background as leaderboard */
+.settings-page {
+  padding: 20px;
+  background-color: #1C3548;
+  color: #BAC366;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Settings Title */
+.settings-title {
+  font-size: 26px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Card-like styling for sections */
+.group-info, .group-members, .your-tasks {
+  background-color: #F8FAFC;
+  color: #1E293B;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+/* Section Headings */
+.group-members h3, .your-tasks h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #BAC366;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Group Member List */
+.group-members ul {
+  list-style: none;
+  padding: 0;
+}
+
+.group-members li {
+  background-color: #E6E6E6;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Highlight current user */
+.member-name {
+  font-weight: bold;
+}
+
 /* Logout Button */
 .logout-button {
   display: inline-block;
-  background-color: #F30; /* Red button */
-  color: #FFFFFF; /* White text */
+  background-color: #F30;
+  color: #FFFFFF;
   text-decoration: none;
   font-size: 18px;
   font-weight: bold;
   text-transform: uppercase;
   padding: 12px 20px;
   border-radius: 8px;
-  border: 2px solid #D00; /* Darker red border */
+  border: 2px solid #D00;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Hover Effect */
 .logout-button:hover {
   background-color: #D00;
-  transform: scale(1.05); /* Slight zoom effect */
+  transform: scale(1.05);
 }
 
-/* Center the Button */
+/* Center the Logout Button */
 .logout-container {
   display: flex;
   justify-content: center;
