@@ -9,7 +9,7 @@ html, body{
 
 /* Dynamic background images for each page */
 .welcome-page {
-  background-image: url('/img/welcome-page.svg');
+  background-image: url('/img/blank-background.svg');
 }
 
 .blank-page {
@@ -35,13 +35,20 @@ html, body{
 /* Centering overlay content */
 .overlay-content {
   position: absolute;
-  top: 60%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 15px;
+}
+
+.logo {
+  display: block;  /* Makes sure it behaves like a block element */
+  margin: 0 auto;  /* Centers it horizontally */
+  width: 50%;    /* Adjust as needed */
+  height: auto;    /* Maintain aspect ratio */
 }
 
 /* Ensure the background color is applied */
