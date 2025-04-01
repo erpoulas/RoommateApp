@@ -255,40 +255,6 @@ app.post('/add-task', async (req, res) => {
   }
 });
 
-
-// app.post('/add-task', async (req, res) => {
-//   const { taskName } = req.body;
-//   const groupId = req.session.groupId;
-
-//   if (!taskName || !frequency || !groupId) {
-//     return res.status(400).send("Invalid task data.");
-// }
-
-//   await db.none(
-//       `INSERT INTO tasks (task_name, group_id, assigned_user, completed, frequency) 
-//        VALUES ($1, $2, NULL, FALSE, 'daily')`,
-//       [taskName, groupId]
-//   );
-
-//   res.status(200).send("Task added.");
-// });
-
-
-// app.post('/add-task', async (req, res) => {
-//   const { taskName } = req.body;
-//   const groupId = req.session.groupId; // Get user's group
-
-//   if (!groupId) {
-//       return res.redirect('/group-selection'); // User must be in a group
-//   }
-
-//   // Insert task with no assigned user
-//   await db.none(`INSERT INTO tasks (group_id, task_name, assigned_user) VALUES ($1, $2, NULL)`, 
-//                [groupId, taskName]);
-
-//   res.redirect('/tasks'); // Redirect back to tasks list
-// });
-
 app.post('/random-assign-tasks', async (req, res) => {
   const groupId = req.session.groupId;
 
@@ -340,31 +306,6 @@ app.post('/complete-task/:taskId', async (req, res) => {
   }
 });
 
-
-// app.post('/complete-task/:taskId', async (req, res) => {
-//   try {
-//       const taskId = req.params.taskId;
-
-//       // ✅ Ensure the task exists before updating
-//       const task = await db.oneOrNone(`SELECT * FROM tasks WHERE id = $1`, [taskId]);
-
-//       if (!task) {
-//           return res.status(404).send("Task not found.");
-//       }
-
-//       // ✅ Mark the task as complete
-//       await db.none(`UPDATE tasks SET completed = TRUE WHERE id = $1`, [taskId]);
-
-//       console.log(`✅ Task ${taskId} marked as complete.`);
-//       res.status(200).send(`Task ${taskId} completed.`);
-//   } catch (err) {
-//       console.error("❌ ERROR in /complete-task:", err);
-//       res.status(500).send("Server error while completing task.");
-//   }
-// });
-
-
-
 app.get('/tasks', async (req, res) => {
   const groupId = req.session.groupId;
   const username = req.session.user;
@@ -388,30 +329,50 @@ app.get('/tasks', async (req, res) => {
   });
 });
 
+app.get('/settings', async (req, res) => {
+  try {
+    const username = req.session.user;
+    const groupId = req.session.groupId;
 
-
-
-// test case written
-app.get('/settings', (req, res) => {
-  res.status(200).render('pages/settings');
-});
-
-//logout destroys the user session and logs the user out
-app.get('/logout', (req,res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error('Failed to destroy session:', err);
-      return res.status(500).render('pages/logout', { 
-        message: 'Could not log out. Please try again later.',
-        error: true
-      });
+    if (!groupId) {
+      return res.redirect('/group-selection'); // Redirect if the user is not in a group
     }
-    res.status(200).render('pages/logout', { 
-      message: 'You have successfully logged out.',
-      error: false
+
+    // 1️⃣ Fetch Group Info (Now including group_code instead of group_id)
+    const groupInfo = await db.oneOrNone(`
+      SELECT group_name, group_code FROM groups WHERE id = $1
+    `, [groupId]);
+
+    // 2️⃣ Fetch Group Members and Their Completed Tasks
+    const groupMembers = await db.any(`
+      SELECT users.username, COUNT(tasks.id) AS completed_tasks
+      FROM users
+      LEFT JOIN tasks ON users.username = tasks.assigned_user AND tasks.completed = TRUE
+      WHERE users.group_id = $1
+      GROUP BY users.username
+      ORDER BY completed_tasks DESC;
+    `, [groupId]);
+
+    // 3️⃣ Fetch the Logged-in User's Completed Task Count
+    const userCompletedTasks = await db.oneOrNone(`
+      SELECT COUNT(id) AS completed_tasks FROM tasks WHERE assigned_user = $1 AND completed = TRUE;
+    `, [username]);
+
+    res.status(200).render('pages/settings', {
+      group_name: groupInfo?.group_name || "Unknown Group",
+      group_code: groupInfo?.group_code || "N/A", // Using group_code instead of group_id
+      group_members: groupMembers,
+      your_username: username,
+      your_completed_tasks: userCompletedTasks?.completed_tasks || 0,
+      pageClass: 'settings-page'
     });
-  });
+
+  } catch (err) {
+    console.error("❌ ERROR in /settings route:", err);
+    res.status(500).render('pages/settings', { message: "Error fetching settings data." });
+  }
 });
+
 
 app.get('/home', (req, res) => {
   // displays information for the home screen, displays the user's data
@@ -459,45 +420,39 @@ app.post('/score', (req, res) => {
   
 });
 
-
 app.get('/leaderboard', function (req, res) {
-  console.log("username", req.session.user);
-  console.log("group id", req.session.groupId);
-  console.log("Session Data:", req.session);
-  // Ensure user is authenticated and has a group_id
-  if (!req.session.user || !req.session.groupId) {
-    return res.status(403).render('pages/leaderboard', {
-      message: 'You must be logged in to view the leaderboard.',
-      pageClass: 'homepage'
-    });
+  // loads the leaderboard by fetching all the users from the database
+  // users are ranked by their highest hard mode score
+  
+    var usersRanked = `select * from users order by high_score desc;`
+  
+    // use task to execute multiple queries
+    db.any(usersRanked)
+      // if query execution succeeds
+      // query results can be obtained
+      // as shown below
+      .then(data => {
+        users = data;
+        console.log("user data fetched");
+        console.log(data);
+        res.status(200).render('pages/leaderboard', {
+          users,
+          pageClass: 'homepage'
+        });
+      })
+      // if query execution fails
+      // send error message
+      .catch(err => {
+        console.log("Error users were not fetched")
+        console.error(err.message);
+        res.status(200).render('pages/leaderboard', {
+          message: 'Error fetching using data',
+          pageClass: 'homepage'
+        });
+      });
   }
-
-  const groupId = req.session.group_id; // Retrieve user's group ID from session
-
-  // Query: Get users from the same group, ordered by high_score
-  const usersRanked = `
-    SELECT * FROM users
-    WHERE group_id = $1
-    ORDER BY high_score DESC;
-  `;
-
-  // Execute query
-  db.any(usersRanked, [groupId])
-    .then(data => {
-      console.log("User data fetched:", data);
-      res.status(200).render('pages/leaderboard', {
-        users: data,
-        pageClass: 'homepage'
-      });
-    })
-    .catch(err => {
-      console.error("Error: users were not fetched", err.message);
-      res.status(500).render('pages/leaderboard', {
-        message: 'Error fetching user data',
-        pageClass: 'homepage'
-      });
-    });
-});
+  
+  );
 
 module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');

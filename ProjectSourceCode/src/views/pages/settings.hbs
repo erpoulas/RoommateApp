@@ -1,27 +1,11 @@
-{{!-- <body>
-  <h1>Select Theme</h1>
-  <div class="button-group" id="theme-buttons">
-    <button type="button" class="btn btn-secondary" onclick="setTheme('Light')">Light Theme</button>
-    <button type="button" class="btn btn-dark" onclick="setTheme('Dark')">Dark Theme</button>
-  </div>
-
-  <!-- Logout Button -->
-    <div class="text-left mt-5">
-      <a href="/logout" class="btn btn-danger">Logout</a>
-    </div>
-
-
-  <script src="/js/script.js"></script>
-</body>
-
-
+{{>nav}}
 <div class="settings-page">
     <h2 class="settings-title">Settings</h2>
 
     <!-- Group Info -->
     <div class="group-info">
         <p><strong>Group Name:</strong> {{group_name}}</p>
-        <p><strong>Group ID:</strong> {{group_id}}</p>
+        <p><strong>Group Code:</strong> {{group_code}}</p>  <!-- Updated to show Group Code -->
     </div>
 
     <!-- Group Members & Completed Tasks -->
@@ -44,39 +28,6 @@
     </div>
 
     <!-- Logout Button -->
-    <button class="logout-button" onclick="logout()">Logout</button>
-</div> --}}
-
-{{>nav}}
-<div class="settings-page">
-    <h2 class="settings-title">Settings</h2>
-
-    <!-- Group Info -->
-    <div class="group-info">
-        <p><strong>Group Name:</strong> {{group_name}}</p>
-        <p><strong>Group ID:</strong> {{group_id}}</p>
-    </div>
-
-    <!-- Group Members & Completed Tasks -->
-    <div class="group-members">
-        <h3>Group Members & Completed Tasks</h3>
-        <ul>
-            {{#each group_members}}
-            <li>
-                <span class="member-name">{{this.username}}</span> - 
-                <span class="completed-tasks">{{this.completed_tasks}} tasks completed</span>
-            </li>
-            {{/each}}
-        </ul>
-    </div>
-
-    <!-- Your Completed Tasks -->
-    <div class="your-tasks">
-        <h3>Your Completed Tasks</h3>
-        <p><strong>{{your_username}}</strong>: {{your_completed_tasks}} tasks completed</p>
-    </div>
-
-    <!-- Logout Button (Custom Styling, No Bootstrap) -->
     <div class="logout-container">
         <a href="/logout" class="logout-button">Logout</a>
     </div>
