@@ -184,6 +184,23 @@ app.post('/register', async (req, res) => {
   }
 });
 
+// app.post('/create-group', async (req, res) => {
+//   const { groupName } = req.body;
+//   const groupCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit code
+
+//   // Insert new group
+//   const group = await db.one(`INSERT INTO groups (group_name, group_code) VALUES ($1, $2) RETURNING id`, 
+//                              [groupName, groupCode]);
+  
+//   // console.log(group.)
+
+//   // Update user to join this group
+//   await db.none(`UPDATE users SET group_id = $1 WHERE username = $2`, [group.id, req.session.user]);
+
+//   req.session.groupId = group.id; // Store group in session
+//   res.redirect('/home'); // Redirect to home after group creation
+// });
+
 app.post('/create-group', async (req, res) => {
   const { groupName } = req.body;
   const groupCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit code
@@ -196,8 +213,28 @@ app.post('/create-group', async (req, res) => {
   await db.none(`UPDATE users SET group_id = $1 WHERE username = $2`, [group.id, req.session.user]);
 
   req.session.groupId = group.id; // Store group in session
+  req.session.save(); // ✅ Ensure session is saved!
+  
   res.redirect('/home'); // Redirect to home after group creation
 });
+
+
+// app.post('/join-group', async (req, res) => {
+//   const { groupCode } = req.body;
+
+//   // Find group by code
+//   const group = await db.oneOrNone(`SELECT id FROM groups WHERE group_code = $1`, [groupCode]);
+
+//   if (!group) {
+//       return res.status(400).render('pages/group-selection', { message: "Invalid group code" });
+//   }
+
+//   // Update user to join this group
+//   await db.none(`UPDATE users SET group_id = $1 WHERE username = $2`, [group.id, req.session.user]);
+
+//   req.session.groupId = group.id; // Store group in session
+//   res.redirect('/home'); // Redirect to home after joining
+// });
 
 app.post('/join-group', async (req, res) => {
   const { groupCode } = req.body;
@@ -213,8 +250,11 @@ app.post('/join-group', async (req, res) => {
   await db.none(`UPDATE users SET group_id = $1 WHERE username = $2`, [group.id, req.session.user]);
 
   req.session.groupId = group.id; // Store group in session
+  req.session.save(); // ✅ Save the session
+  
   res.redirect('/home'); // Redirect to home after joining
 });
+
 
 // const ensureInGroup = (req, res, next) => {
 //   if (!req.session.groupId) {
@@ -233,27 +273,27 @@ const auth = (req, res, next) => {
 app.use(auth);
 
 
-app.post('/add-task', async (req, res) => {
-  try {
-      const { taskName, frequency } = req.body;
-      const groupId = req.session.groupId;
+// app.post('/add-task', async (req, res) => {
+//   try {
+//       const { taskName, frequency } = req.body;
+//       const groupId = req.session.groupId;
 
-      if (!taskName || !frequency || !groupId) {
-          return res.status(400).send("Invalid task data.");
-      }
+//       if (!taskName || !frequency || !groupId) {
+//           return res.status(400).send("Invalid task data.");
+//       }
 
-      await db.none(
-          `INSERT INTO tasks (task_name, group_id, assigned_user, completed, frequency) 
-           VALUES ($1, $2, NULL, FALSE, $3)`,
-          [taskName, groupId, frequency]
-      );
+//       await db.none(
+//           `INSERT INTO tasks (task_name, group_id, assigned_user, completed, frequency) 
+//            VALUES ($1, $2, NULL, FALSE, $3)`,
+//           [taskName, groupId, frequency]
+//       );
 
-      res.status(200).send("Task added.");
-  } catch (err) {
-      console.error("❌ ERROR in /add-task:", err);
-      res.status(500).send("Server error while adding task.");
-  }
-});
+//       res.status(200).send("Task added.");
+//   } catch (err) {
+//       console.error("❌ ERROR in /add-task:", err);
+//       res.status(500).send("Server error while adding task.");
+//   }
+// });
 
 
 // app.post('/add-task', async (req, res) => {
@@ -289,6 +329,31 @@ app.post('/add-task', async (req, res) => {
 //   res.redirect('/tasks'); // Redirect back to tasks list
 // });
 
+function addTask(frequency) {
+  const taskName = document.getElementById(`taskName-${frequency}`).value;
+
+  if (!taskName.trim()) {
+      alert("Please enter a task name!");
+      return;
+  }
+
+  fetch('/add-task', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ taskName, frequency })
+  })
+  .then(response => response.json()) // ✅ Expect JSON response
+  .then(data => {
+      console.log("✅ Task added:", data.message);
+      location.reload();
+  })
+  .catch(error => {
+      console.error("❌ Error adding task:", error);
+      alert("Error: " + error.message);
+  });
+}
+
+
 app.post('/random-assign-tasks', async (req, res) => {
   const groupId = req.session.groupId;
 
@@ -311,34 +376,34 @@ app.post('/random-assign-tasks', async (req, res) => {
   res.redirect('/tasks');
 });
 
-app.post('/complete-task/:taskId', async (req, res) => {
-  try {
-      const taskId = req.params.taskId;
+// app.post('/complete-task/:taskId', async (req, res) => {
+//   try {
+//       const taskId = req.params.taskId;
 
-      // ✅ Fetch the task to get the assigned user
-      const task = await db.oneOrNone(`SELECT assigned_user FROM tasks WHERE id = $1`, [taskId]);
+//       // ✅ Fetch the task to get the assigned user
+//       const task = await db.oneOrNone(`SELECT assigned_user FROM tasks WHERE id = $1`, [taskId]);
 
-      if (!task) {
-          return res.status(404).send("Task not found.");
-      }
+//       if (!task) {
+//           return res.status(404).send("Task not found.");
+//       }
 
-      if (!task.assigned_user) {
-          return res.status(400).send("Task is unassigned and cannot be completed.");
-      }
+//       if (!task.assigned_user) {
+//           return res.status(400).send("Task is unassigned and cannot be completed.");
+//       }
 
-      // ✅ Update the task as completed
-      await db.none(`UPDATE tasks SET completed = TRUE WHERE id = $1`, [taskId]);
+//       // ✅ Update the task as completed
+//       await db.none(`UPDATE tasks SET completed = TRUE WHERE id = $1`, [taskId]);
 
-      // ✅ Increase the assigned user's high_score by 1
-      await db.none(`UPDATE users SET high_score = high_score + 100 WHERE username = $1`, [task.assigned_user]);
+//       // ✅ Increase the assigned user's high_score by 1
+//       await db.none(`UPDATE users SET high_score = high_score + 100 WHERE username = $1`, [task.assigned_user]);
 
-      console.log(`✅ Task ${taskId} completed by ${task.assigned_user}. Score updated.`);
-      res.status(200).send(`Task ${taskId} completed by ${task.assigned_user}. Score increased.`);
-  } catch (err) {
-      console.error("❌ ERROR in /complete-task:", err);
-      res.status(500).send("Server error while completing task.");
-  }
-});
+//       console.log(`✅ Task ${taskId} completed by ${task.assigned_user}. Score updated.`);
+//       res.status(200).send(`Task ${taskId} completed by ${task.assigned_user}. Score increased.`);
+//   } catch (err) {
+//       console.error("❌ ERROR in /complete-task:", err);
+//       res.status(500).send("Server error while completing task.");
+//   }
+// });
 
 
 // app.post('/complete-task/:taskId', async (req, res) => {
@@ -363,6 +428,30 @@ app.post('/complete-task/:taskId', async (req, res) => {
 //   }
 // });
 
+app.post('/complete-task/:taskId', async (req, res) => {
+  try {
+      const taskId = req.params.taskId;
+
+      const task = await db.oneOrNone(`SELECT assigned_user FROM tasks WHERE id = $1`, [taskId]);
+
+      if (!task) {
+          return res.status(404).json({ error: "Task not found." }); // ✅ JSON response
+      }
+
+      if (!task.assigned_user) {
+          return res.status(400).json({ error: "Task is unassigned and cannot be completed." });
+      }
+
+      await db.none(`UPDATE tasks SET completed = TRUE WHERE id = $1`, [taskId]);
+
+      await db.none(`UPDATE users SET high_score = high_score + 100 WHERE username = $1`, [task.assigned_user]);
+
+      res.status(200).json({ message: `Task ${taskId} completed by ${task.assigned_user}. Score increased.` }); // ✅ JSON response
+  } catch (err) {
+      console.error("❌ ERROR in /complete-task:", err);
+      res.status(500).json({ error: "Server error while completing task." });
+  }
+});
 
 
 app.get('/tasks', async (req, res) => {
@@ -392,8 +481,352 @@ app.get('/tasks', async (req, res) => {
 
 
 // test case written
-app.get('/settings', (req, res) => {
-  res.status(200).render('pages/settings');
+// app.get('/settings', (req, res) => {
+//   res.status(200).render('pages/settings');
+// });
+
+// app.get('/settings', async (req, res) => {
+//   try {
+//       // Ensure user is logged in
+//       if (!req.session.user) {
+//           return res.redirect('/login'); // Redirect to login if not logged in
+//       }
+
+//       const userId = req.session.user.id; // Assuming user info is stored in session
+
+//       // Fetch user info from database
+//       const user = await db.query('SELECT username, completed_tasks FROM users WHERE id = $1', [userId]);
+
+//       // Fetch user's group info
+//       const group = await db.query('SELECT name, id FROM groups WHERE id = (SELECT group_id FROM users WHERE id = $1)', [userId]);
+
+//       // Fetch all group members & their completed tasks
+//       const groupMembers = await db.query(
+//           'SELECT username, completed_tasks FROM users WHERE group_id = (SELECT group_id FROM users WHERE id = $1)',
+//           [userId]
+//       );
+
+//       res.status(200).render('pages/settings', {
+//           group_name: group.rows[0]?.name || 'Unknown Group',
+//           group_id: group.rows[0]?.id || 'N/A',
+//           group_members: groupMembers.rows,
+//           your_username: user.rows[0]?.username || 'User',
+//           your_completed_tasks: user.rows[0]?.completed_tasks || 0,
+//       });
+
+//   } catch (error) {
+//       console.error('Error fetching settings data:', error);
+//       res.status(500).send('Internal Server Error');
+//   }
+// });
+
+// app.get('/settings', async (req, res) => {
+//   try {
+//       // Ensure user is logged in
+//       if (!req.session.user) {
+//           console.log("User not logged in. Redirecting...");
+//           return res.redirect('/login');
+//       }
+
+//       const username = req.session.user; // Directly use session as string (username)
+//       console.log("Fetching data for user:", username);
+
+//       // Fetch user info & count their completed tasks
+//       const userQuery = await db.query(
+//           `SELECT username, 
+//                   (SELECT COUNT(*) FROM tasks WHERE assigned_user = users.username AND completed = true) AS completed_tasks
+//            FROM users
+//            WHERE username = $1`,
+//           [username]
+//       );
+
+//       if (!userQuery.rows || userQuery.rows.length === 0) {
+//           console.error("❌ User not found in database.");
+//           return res.status(404).send("User not found.");
+//       }
+
+//       const user = userQuery.rows[0];
+
+//       // Fetch user's group info
+//       const groupQuery = await db.query(
+//           `SELECT group_name, id FROM groups 
+//            WHERE id = (SELECT group_id FROM users WHERE username = $1)`,
+//           [username]
+//       );
+
+//       let group = { group_name: 'No Group', id: null };
+//       if (groupQuery.rows && groupQuery.rows.length > 0) {
+//           group = groupQuery.rows[0];
+//       }
+
+//       // Fetch all group members & their completed tasks (only if user is in a group)
+//       let groupMembers = [];
+//       if (group.id) {
+//           const groupMembersQuery = await db.query(
+//               `SELECT username, 
+//                       (SELECT COUNT(*) FROM tasks WHERE assigned_user = users.username AND completed = true) AS completed_tasks
+//                FROM users
+//                WHERE group_id = $1`,
+//               [group.id]
+//           );
+//           groupMembers = groupMembersQuery.rows || [];
+//       }
+
+//       console.log("✅ Successfully fetched settings data!");
+
+//       res.status(200).render('pages/settings', {
+//           group_name: group.group_name,
+//           group_id: group.id || 'N/A',
+//           group_members: groupMembers,
+//           your_username: user.username,
+//           your_completed_tasks: user.completed_tasks || 0
+//       });
+
+//   } catch (error) {
+//       console.error('❌ Error fetching settings data:', error);
+//       res.status(500).send('Internal Server Error. Please try again later.');
+//   }
+// });
+
+
+// app.get('/settings', async (req, res) => {
+//   try {
+//       // Ensure user is logged in
+//       if (!req.session.user) {
+//           console.log("❌ User not logged in. Redirecting...");
+//           return res.redirect('/login');
+//       }
+
+//       const username = req.session.user.trim(); // Trim to remove any accidental whitespace
+//       console.log("🔎 Fetching data for user:", `"${username}"`); // Log username to verify
+
+//       // Fetch user info & completed tasks count
+//       const userQuery = await db.query(
+//           `SELECT username, 
+//                   COALESCE((SELECT COUNT(*) FROM tasks WHERE assigned_user = users.username AND completed = TRUE), 0) AS completed_tasks
+//            FROM users
+//            WHERE LOWER(username) = LOWER($1)`, // Ensures case-insensitive matching
+//           [username]
+//       );
+
+//       if (!userQuery.rows || userQuery.rows.length === 0) {
+//           console.error(`❌ User "${username}" not found in database.`);
+//           return res.status(404).send(`User "${username}" not found.`);
+//       }
+
+//       const user = userQuery.rows[0];
+//       console.log("✅ User found:", user);
+
+//       // Fetch user's group info
+//       const groupQuery = await db.query(
+//           `SELECT group_name, id FROM groups 
+//            WHERE id = (SELECT group_id FROM users WHERE username = $1)`,
+//           [username]
+//       );
+
+//       let group = { group_name: 'No Group', id: null };
+//       if (groupQuery.rows && groupQuery.rows.length > 0) {
+//           group = groupQuery.rows[0];
+//       }
+
+//       // Fetch all group members & their completed tasks (only if user is in a group)
+//       let groupMembers = [];
+//       if (group.id) {
+//           const groupMembersQuery = await db.query(
+//               `SELECT username, 
+//                       COALESCE((SELECT COUNT(*) FROM tasks WHERE assigned_user = users.username AND completed = TRUE), 0) AS completed_tasks
+//                FROM users
+//                WHERE group_id = $1`,
+//               [group.id]
+//           );
+//           groupMembers = groupMembersQuery.rows || [];
+//       }
+
+//       console.log("✅ Successfully fetched settings data!");
+
+//       res.status(200).render('pages/settings', {
+//           group_name: group.group_name,
+//           group_id: group.id || 'N/A',
+//           group_members: groupMembers,
+//           your_username: user.username,
+//           your_completed_tasks: user.completed_tasks || 0
+//       });
+
+//   } catch (error) {
+//       console.error('❌ Error fetching settings data:', error);
+//       res.status(500).send('Internal Server Error. Please try again later.');
+//   }
+// });
+
+// app.get('/settings', async (req, res) => {
+//   try {
+//       // Ensure user is logged in
+//       if (!req.session.user) {
+//           console.log("❌ User not logged in. Redirecting...");
+//           return res.redirect('/login'); // Redirect if no session
+//       }
+
+//       // Convert session user ID to an integer (if stored as a string)
+//       const userId = parseInt(req.session.user, 10);
+//       console.log(`🔎 Fetching data for user ID: ${userId}`);
+
+//       // Fetch user info & completed tasks
+//       const userQuery = await db.query(
+//           `SELECT username, 
+//                   (SELECT COUNT(*) FROM tasks WHERE assigned_user = users.username AND completed = true) AS completed_tasks
+//            FROM users
+//            WHERE id = $1`,
+//           [userId]
+//       );
+
+//       // Check if user exists
+//       if (!userQuery.rows || userQuery.rows.length === 0) {
+//           console.error(`❌ User "${userId}" not found in database.`);
+//           return res.status(404).send("User not found.");
+//       }
+
+//       const user = userQuery.rows[0];
+
+//       // Fetch user's group info
+//       const groupQuery = await db.query(
+//           `SELECT group_name, id FROM groups WHERE id = (SELECT group_id FROM users WHERE id = $1)`,
+//           [userId]
+//       );
+
+//       // Handle missing group data
+//       const group = groupQuery.rows.length > 0 ? groupQuery.rows[0] : { group_name: 'No Group', id: null };
+
+//       // Fetch all group members & their completed tasks
+//       let groupMembers = [];
+//       if (group.id) {
+//           const groupMembersQuery = await db.query(
+//               `SELECT username, 
+//                       (SELECT COUNT(*) FROM tasks WHERE assigned_user = users.username AND completed = true) AS completed_tasks
+//                FROM users
+//                WHERE group_id = $1`,
+//               [group.id]
+//           );
+//           groupMembers = groupMembersQuery.rows || [];
+//       }
+
+//       console.log("✅ Successfully fetched settings data!");
+
+//       res.status(200).render('pages/settings', {
+//           group_name: group.group_name,
+//           group_id: group.id || 'N/A',
+//           group_members: groupMembers,
+//           your_username: user.username,
+//           your_completed_tasks: user.completed_tasks || 0
+//       });
+
+//   } catch (error) {
+//       console.error('❌ Error fetching settings data:', error);
+//       res.status(500).send('Internal Server Error. Please try again later.');
+//   }
+// });
+
+// app.get('/settings', async (req, res) => {
+//   try {
+//       // Ensure user is logged in
+//       if (!req.session.user) {
+//           console.log("❌ User not logged in. Redirecting...");
+//           return res.redirect('/login');
+//       }
+
+//       const username = req.session.user; // Session stores username, not an ID
+//       console.log(`🔎 Fetching data for user: "${username}"`);
+
+//       // Fetch user info & completed tasks (by username)
+//       const userQuery = await db.query(
+//           `SELECT username, 
+//                   (SELECT COUNT(*) FROM tasks WHERE assigned_user = users.username AND completed = true) AS completed_tasks
+//            FROM users
+//            WHERE username = $1`,
+//           [username]
+//       );
+
+//       // Check if user exists
+//       if (!userQuery.rows || userQuery.rows.length === 0) {
+//           console.error(`❌ User "${username}" not found in database.`);
+//           return res.status(404).send("User not found.");
+//       }
+
+//       const user = userQuery.rows[0];
+
+//       // Fetch user's group info (by group_id)
+//       const groupQuery = await db.query(
+//           `SELECT group_name, id FROM groups WHERE id = (SELECT group_id FROM users WHERE username = $1)`,
+//           [username]
+//       );
+
+//       // Handle missing group data
+//       const group = groupQuery.rows.length > 0 ? groupQuery.rows[0] : { group_name: 'No Group', id: null };
+
+//       // Fetch all group members & their completed tasks (only if user is in a group)
+//       let groupMembers = [];
+//       if (group.id) {
+//           const groupMembersQuery = await db.query(
+//               `SELECT username, 
+//                       (SELECT COUNT(*) FROM tasks WHERE assigned_user = users.username AND completed = true) AS completed_tasks
+//                FROM users
+//                WHERE group_id = $1`,
+//               [group.id]
+//           );
+//           groupMembers = groupMembersQuery.rows || [];
+//       }
+
+//       console.log("✅ Successfully fetched settings data!");
+
+//       res.status(200).render('pages/settings', {
+//           group_name: group.group_name,
+//           group_id: group.id || 'N/A',
+//           group_members: groupMembers,
+//           your_username: user.username,
+//           your_completed_tasks: user.completed_tasks || 0
+//       });
+
+//   } catch (error) {
+//       console.error('❌ Error fetching settings data:', error);
+//       res.status(500).send('Internal Server Error. Please try again later.');
+//   }
+// });
+
+app.get('/settings', async (req, res) => {
+  try {
+      console.log("📢 Session Data Before Query:", req.session); // Debugging
+
+      if (!req.session.user) {
+          console.log("❌ User not logged in. Redirecting...");
+          return res.redirect('/login');
+      }
+
+      const username = req.session.user;
+      console.log(`🔎 Fetching data for user: "${username}"`);
+
+      const userQuery = await db.query(
+          `SELECT username, 
+                  (SELECT COUNT(*) FROM tasks WHERE assigned_user = users.username AND completed = true) AS completed_tasks
+           FROM users
+           WHERE username = $1`,
+          [username]
+      );
+
+      if (!userQuery.rows || userQuery.rows.length === 0) {
+          console.error(`❌ User "${username}" not found in database.`);
+          return res.status(404).send("User not found.");
+      }
+
+      const user = userQuery.rows[0];
+
+      res.status(200).render('pages/settings', {
+          your_username: user.username,
+          your_completed_tasks: user.completed_tasks || 0
+      });
+
+  } catch (error) {
+      console.error('❌ Error fetching settings data:', error);
+      res.status(500).send('Internal Server Error. Please try again later.');
+  }
 });
 
 //logout destroys the user session and logs the user out

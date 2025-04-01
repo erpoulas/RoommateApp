@@ -672,31 +672,60 @@ html, body{
   justify-content: center; /* Centers the whole nav */
 }
 
-/* Logout Button */
 .logout-button {
-  display: inline-block;
-  background-color: #F30; /* Red button */
-  color: #FFFFFF; /* White text */
-  text-decoration: none;
+  display: flex;
+  width: 212px;
+  height: 58px;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  border-radius: 16px;
+  border: 1px solid #2C2C2C;
+  background-color: #F30;
+  color: #FFFFFF;
+
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 600;
   text-transform: uppercase;
-  padding: 12px 20px;
-  border-radius: 8px;
-  border: 2px solid #D00; /* Darker red border */
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Hover Effect */
 .logout-button:hover {
   background-color: #D00;
-  transform: scale(1.05); /* Slight zoom effect */
+  transform: scale(1.05);
 }
+
 
 /* Center the Button */
 .logout-container {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+}
+
+.group-list-item {
+  background-color: #F8FAFC;
+  color: #1E293B;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-page {
+  padding: 20px;
+  background-color: #1C3548;
+  color: #BAC366;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }

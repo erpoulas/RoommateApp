@@ -60,10 +60,10 @@
     <!-- Group Members & Completed Tasks -->
     <div class="group-members">
         <h3>Group Members & Completed Tasks</h3>
-        <ul>
+        <ul class="group-list">
             {{#each group_members}}
-            <li>
-                <span class="member-name">{{this.username}}</span> - 
+            <li class="group-list-item">
+                <span class="member-name">{{this.username}}</span> 
                 <span class="completed-tasks">{{this.completed_tasks}} tasks completed</span>
             </li>
             {{/each}}
@@ -76,7 +76,7 @@
         <p><strong>{{your_username}}</strong>: {{your_completed_tasks}} tasks completed</p>
     </div>
 
-    <!-- Logout Button (Custom Styling, No Bootstrap) -->
+    <!-- Logout Button -->
     <div class="logout-container">
         <a href="/logout" class="logout-button">Logout</a>
     </div>
