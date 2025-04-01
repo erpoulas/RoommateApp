@@ -270,26 +270,6 @@ html, body{
   padding-top: 50px; /* Adjust to position buttons further down */
 }
 
-
-.settings-page {
-  background-image: url('/img/blank-background.svg');
-}
-
-.settings-elements{
-  display: flex;
-  flex-direction: column; /* Stack elements vertically */
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
-  /* height: 100vh; Full viewport height */
-  text-align: center; /* Ensure text inside elements is centered */
-}
-
-.group-info, .group-members, .your-tasks, .logout-container {
-  width: 50%; /* Adjust width as needed */
-  padding: 20px;
-}
-
-
 .left-column{
   display: flex;
   justify-content: center; /* Center horizontally */
@@ -697,6 +677,12 @@ html, body{
   margin:0;
   padding: 0;
 
+}
+
+/* Apply same background as leaderboard */
+.settings-page {
+  background-image: url('/img/blank-background.svg');
+  align-items: center;
 }
 
 /* Settings Title */
