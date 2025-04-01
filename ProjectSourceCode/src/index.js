@@ -153,6 +153,22 @@ app.post('/login', async (req, res) => {
 
 });
 
+app.get('/logout', (req,res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Failed to destroy session:', err);
+      return res.status(500).render('pages/logout', { 
+        message: 'Could not log out. Please try again later.',
+        error: true
+      });
+    }
+    res.status(200).render('pages/logout', { 
+      message: 'You have successfully logged out.',
+      error: false
+    });
+  });
+});
+
 app.post('/register', async (req, res) => {
     //hash the password using bcrypt library
     
