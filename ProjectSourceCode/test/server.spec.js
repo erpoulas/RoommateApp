@@ -129,7 +129,7 @@ describe('I am testing registration with existing user in database', () => {
     chai
       .request(app)
       .post('/register')      
-      .send({ username: 'hhawksley0', password: 'MiamiBeach832$' })
+      .send({ username: 'alice', password: 'MiamiBeach832$' })
       .end((err, res) => {
         if (err) return done(err);
         expect(res).to.have.status(400);
@@ -149,7 +149,7 @@ describe('I am testing login with existing user, incorrect password', () => {
     chai
       .request(app)
       .post('/login')
-      .send({ username: 'hhawksley0', password: 'Stu1234567?' })
+      .send({ username: 'bob', password: 'Stu1234567?' })
       .end((err, res) => {
         if (err) return done(err);
         expect(res).to.have.status(400);
@@ -166,7 +166,7 @@ describe('I am testing login with valid credentials', () => {
     chai
       .request(app)
       .post('/login')
-      .send({ username: 'hhawksley0', password: 'Stu123456!' })
+      .send({ username: 'bob', password: 'Stu123456!' })
       .end((err, res) => {
         if (err) return done(err);
         expect(res).to.have.status(200);
