@@ -5,4 +5,6 @@ Our goal for this project is to minimize conflicts caused by cleaning schedule c
 
 [Future implementation design](https://www.figma.com/proto/m3pE2Os6Lo8diyJmlAYA04/Untitled?node-id=1-2&p=f&t=ac6xwuvMJWMKXFJq-0&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2)
 
+[Initial Figma app mockup](https://www.figma.com/design/h1DYk595fd7bzPT30PCPFL/Untitled?node-id=0-1&t=Frz4uOJLe1aDKqEf-0)
+
 To run, cd into ProjectSourceCode directory and run docker compose up, then open http://localhost:3000/
